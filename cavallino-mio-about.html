@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O nÃ¡s | Cavallino mio</title>
+<link rel="stylesheet" href="fonts.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Lato',Arial,sans-serif;font-size:16px;line-height:1.6;color:#1A1A1A;background:#F8F6F2}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+
+:root{
+  --green:#2B5436;--green-dark:#1D3B25;--green-light:#E8F1EB;
+  --brown:#A67C4E;--brown-light:#F5EDE0;
+  --bg:#F8F6F2;--white:#FFFFFF;--border:#E2DAD0;
+  --text:#1A1A1A;--text-mid:#4A4A4A;--text-muted:#767676;
+  --radius:6px;--shadow:0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:0 6px 28px rgba(0,0,0,0.11);--transition:0.2s ease;--max:1260px;
+}
+
+[data-lucide]{display:inline-block;vertical-align:middle;stroke-width:1.8}
+.topbar [data-lucide]{width:14px;height:14px}
+.header-action [data-lucide]{width:20px;height:20px}
+.nav-primary [data-lucide]{width:14px;height:14px}
+.btn [data-lucide]{width:17px;height:17px}
+.logo-icon [data-lucide]{width:22px;height:22px;color:white;stroke-width:1.5}
+.footer-contact-item [data-lucide]{width:15px;height:15px;flex-shrink:0;margin-top:3px}
+.footer-social [data-lucide]{width:16px;height:16px}
+.back-top [data-lucide]{width:18px;height:18px}
+.breadcrumb [data-lucide]{width:14px;height:14px;color:var(--text-muted)}
+.value-icon [data-lucide]{width:28px;height:28px}
+.contact-card [data-lucide]{width:22px;height:22px}
+
+h1,h2,h3,h4{font-family:'Lora',Georgia,serif;font-weight:600;line-height:1.2}
+h1{font-size:clamp(32px,4vw,52px)}
+h2{font-size:clamp(26px,3.5vw,38px)}
+h3{font-size:clamp(20px,2.5vw,26px)}
+.label{font-size:14px;font-weight:700;color:var(--brown)}
+
+.container{max-width:var(--max);margin:0 auto;padding:0 32px}
+.section{padding:72px 0}
+.section-sm{padding:48px 0}
+
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;font-family:'Lato',sans-serif;padding:13px 28px;border-radius:var(--radius);transition:var(--transition);cursor:pointer;border:2px solid transparent;white-space:nowrap}
+.btn-primary{background:var(--green);color:var(--white);border-color:var(--green)}
+.btn-primary:hover{background:var(--green-dark);border-color:var(--green-dark)}
+.btn-outline{background:transparent;color:var(--green);border-color:var(--green)}
+.btn-outline:hover{background:var(--green);color:var(--white)}
+.btn-white{background:var(--white);color:var(--green);border-color:var(--white)}
+.btn-white:hover{background:var(--brown-light)}
+
+/* TOP BAR */
+.topbar{background:var(--green-dark);color:var(--white);font-size:14px;height:36px;display:flex;align-items:center}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;width:100%}
+.topbar-left{display:flex;align-items:center;gap:24px}
+.topbar-right{display:flex;align-items:center;gap:20px}
+.topbar a{color:var(--white);opacity:.85;transition:opacity var(--transition)}
+.topbar a:hover{opacity:1}
+.topbar-icon{display:flex;align-items:center;gap:6px}
+
+/* HEADER */
+.header{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.header-inner{display:flex;align-items:center;gap:32px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-icon{width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.logo-text{line-height:1.1}
+.logo-text strong{display:block;font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--green);letter-spacing:.02em}
+.logo-text span{display:block;font-size:11px;color:var(--text-muted);letter-spacing:.04em}
+.nav-primary{flex:1}
+.nav-primary ul{display:flex;align-items:center;gap:4px}
+.nav-primary>ul>li{position:relative}
+.nav-primary>ul>li>a{display:flex;align-items:center;gap:4px;font-size:15px;font-weight:700;color:var(--text);padding:8px 14px;border-radius:var(--radius);transition:var(--transition);white-space:nowrap}
+.nav-primary>ul>li>a:hover,.nav-primary>ul>li>a.active{background:var(--green-light);color:var(--green)}
+.nav-dropdown{position:absolute;top:calc(100% + 8px);left:0;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);min-width:220px;padding:8px 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .18s ease;z-index:200}
+.nav-primary>ul>li:hover .nav-dropdown{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown li a{display:block;padding:9px 20px;font-size:15px;color:var(--text-mid);transition:var(--transition)}
+.nav-dropdown li a:hover{background:var(--green-light);color:var(--green);padding-left:26px}
+.header-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.header-action{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius);color:var(--text);transition:var(--transition)}
+.header-action:hover{background:var(--green-light);color:var(--green)}
+.cart-badge{position:absolute;top:4px;right:4px;background:var(--brown);color:var(--white);font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
+.search-bar{display:flex;align-items:center;background:var(--bg);border:1.5px solid var(--border);border-radius:100px;padding:0 16px;gap:8px;height:42px;transition:var(--transition);width:260px}
+.search-bar [data-lucide]{width:16px;height:16px;color:var(--text-muted);flex-shrink:0}
+.search-bar:focus-within{border-color:var(--green);background:var(--white);box-shadow:0 0 0 3px rgba(43,84,54,.12)}
+.search-bar input{border:none;background:transparent;outline:none;font-family:'Lato',sans-serif;font-size:15px;color:var(--text);width:100%}
+.search-bar input::placeholder{color:var(--text-muted)}
+.nav-vyprodej{color:#C0392B!important}
+
+/* BREADCRUMB */
+.breadcrumb-bar{background:var(--white);border-bottom:1px solid var(--border);padding:12px 0}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-muted);flex-wrap:wrap}
+.breadcrumb a{color:var(--text-muted);transition:var(--transition)}
+.breadcrumb a:hover{color:var(--green)}
+.breadcrumb-current{color:var(--text);font-weight:700}
+
+/* PAGE HERO */
+.page-hero{
+  background:linear-gradient(135deg,#1D3B25 0%,#2B5436 50%,#3D7050 100%);
+  padding:72px 0;color:var(--white);text-align:center;
+}
+.page-hero .label{color:rgba(255,255,255,.6);margin-bottom:12px}
+.page-hero h1{color:var(--white);margin-bottom:16px;font-weight:500}
+.page-hero p{font-size:18px;color:rgba(255,255,255,.8);max-width:540px;margin:0 auto;line-height:1.75}
+
+/* STORY */
+.story-section{background:var(--white)}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.story-img{
+  aspect-ratio:4/3;border-radius:12px;overflow:hidden;
+  background:linear-gradient(135deg,#3D6B52,#2B5436);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.story-img-inner{display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,.45);text-align:center;padding:32px}
+.story-img-inner [data-lucide]{width:56px;height:56px;opacity:.3;stroke-width:1}
+.story-img-inner p{font-size:14px;font-style:italic}
+.story-img-accent{
+  position:absolute;bottom:-16px;right:-16px;
+  width:120px;height:120px;border-radius:10px;
+  background:var(--brown-light);border:4px solid var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Lora',serif;font-size:32px;font-weight:600;color:var(--brown);
+}
+.story-text .label{margin-bottom:12px}
+.story-text h2{margin-bottom:20px}
+.story-text p{font-size:16px;color:var(--text-mid);line-height:1.85;margin-bottom:16px}
+
+/* VALUES */
+.values-section{background:var(--bg)}
+.values-header{text-align:center;margin-bottom:52px}
+.values-header .label{margin-bottom:8px}
+.values-header h2{margin-bottom:12px}
+.values-header p{font-size:17px;color:var(--text-mid);max-width:500px;margin:0 auto}
+.values-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.value-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:32px 24px;text-align:center;transition:transform var(--transition),box-shadow var(--transition)}
+.value-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.value-icon{width:64px;height:64px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:var(--green)}
+.value-card h3{font-family:'Lato',sans-serif;font-size:17px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.value-card p{font-size:15px;color:var(--text-mid);line-height:1.65}
+
+/* PROMISE STRIP */
+.promise-strip{background:var(--green);padding:52px 0}
+.promise-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:0;text-align:center}
+.promise-item{padding:0 32px;border-right:1px solid rgba(255,255,255,.2);color:var(--white)}
+.promise-item:last-child{border-right:none}
+.promise-item [data-lucide]{width:32px;height:32px;opacity:.8;margin:0 auto 14px;display:block}
+.promise-item h3{font-family:'Lora',serif;font-size:22px;margin-bottom:8px;color:var(--white)}
+.promise-item p{font-size:15px;color:rgba(255,255,255,.78);line-height:1.65}
+
+/* CONTACT CTA */
+.contact-section{background:var(--white)}
+.contact-header{text-align:center;margin-bottom:52px}
+.contact-header .label{margin-bottom:8px}
+.contact-header h2{margin-bottom:12px}
+.contact-header p{font-size:17px;color:var(--text-mid);max-width:480px;margin:0 auto}
+.contact-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.contact-card{border:1px solid var(--border);border-radius:12px;padding:32px 24px;text-align:center;transition:border-color var(--transition),box-shadow var(--transition)}
+.contact-card:hover{border-color:var(--green);box-shadow:var(--shadow)}
+.contact-card-icon{width:56px;height:56px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--green)}
+.contact-card h3{font-family:'Lato',sans-serif;font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
+.contact-card p{font-size:15px;color:var(--text-mid);line-height:1.6;margin-bottom:16px}
+.contact-card a.contact-link{font-size:16px;font-weight:700;color:var(--green);display:inline-block}
+.contact-card a.contact-link:hover{text-decoration:underline}
+.contact-note{font-size:14px;color:var(--text-muted);margin-top:6px}
+
+/* FOOTER */
+.footer{background:#111C14;color:rgba(255,255,255,.82]}
+.footer-top{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px}
+.footer-brand .logo-text strong{color:#9AC9A8}
+.footer-brand .logo-text span{color:rgba(255,255,255,.35)}
+.footer-brand .logo-icon{background:rgba(255,255,255,.08)}
+.footer-brand p{font-size:15px;color:rgba(255,255,255,.65);margin-top:16px;line-height:1.75;max-width:240px}
+.footer-social{display:flex;gap:10px;margin-top:20px}
+.footer-social a{width:38px;height:38px;background:rgba(255,255,255,.08);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);transition:var(--transition)}
+.footer-social a:hover{background:var(--green);color:var(--white)}
+.footer-col h5{font-family:'Lato',sans-serif;font-size:14px;font-weight:700;color:rgba(255,255,255,.38);margin-bottom:16px}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:15px;color:rgba(255,255,255,.68);transition:var(--transition)}
+.footer-col ul li a:hover{color:var(--white);padding-left:4px}
+.footer-contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;font-size:15px;color:rgba(255,255,255,.68)}
+.footer-contact-item [data-lucide]{color:var(--brown)}
+.footer-bottom{padding:20px 0;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:rgba(255,255,255,.38)}
+.footer-bottom a{color:rgba(255,255,255,.45);transition:var(--transition)}
+.footer-bottom a:hover{color:var(--white)}
+.footer-bottom-links{display:flex;gap:20px}
+.back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:90;cursor:pointer;border:none}
+.back-top.visible{opacity:1;transform:translateY(0)}
+.back-top:hover{background:var(--green-dark)}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <span class="topbar-icon"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></span>
+      <span style="opacity:.35">|</span>
+      <span>Po aÅ¾ PÃ¡, 9:00 do 17:00</span>
+    </div>
+    <div class="topbar-right">
+      <a href="cavallino-mio-about.html" style="font-weight:700;opacity:1">O nÃ¡s</a>
+      <a href="#">Kontakty</a>
+      <a href="#">Doprava a platba</a>
+      <span style="opacity:.35">|</span>
+      <a href="#" style="font-weight:700">PÅihlÃ¡sit se</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="cavallino-mio-homepage.html" class="logo">
+        <div class="logo-icon"><i data-lucide="heart"></i></div>
+        <div class="logo-text"><strong>Cavallino mio</strong><span>JezdeckÃ© potÅeby</span></div>
+      </a>
+      <nav class="nav-primary">
+        <ul>
+          <li>
+            <a href="cavallino-mio-category.html">PotÅeby pro jezdce <i data-lucide="chevron-down"></i></a>
+            <ul class="nav-dropdown">
+              <li><a href="cavallino-mio-category.html">PÅilby a helmy</a></li>
+              <li><a href="cavallino-mio-category.html">JezdeckÃ© kalhoty</a></li>
+              <li><a href="cavallino-mio-category.html">Boty a ÄiÅ¾my</a></li>
+              <li><a href="cavallino-mio-category.html">Rukavice</a></li>
+              <li><a href="cavallino-mio-category.html">BezpeÄnostnÃ­ vesty</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">PotÅeby pro konÄ <i data-lucide="chevron-down"></i></a>
+            <ul class="nav-dropdown">
+              <li><a href="#">Udidla a nÃ¡hlavnÃ­ky</a></li>
+              <li><a href="#">Sedla a podsedlovÃ© deÄky</a></li>
+              <li><a href="#">Deky a Äabraky</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">PotÅeby pro stÃ¡j <i data-lucide="chevron-down"></i></a>
+            <ul class="nav-dropdown">
+              <li><a href="#">KbelÃ­ky a koryta</a></li>
+              <li><a href="#">VybavenÃ­ stÃ¡je</a></li>
+            </ul>
+          </li>
+          <li><a href="#" class="nav-vyprodej">VÃ½prodej</a></li>
+        </ul>
+      </nav>
+      <div class="search-bar">
+        <i data-lucide="search"></i>
+        <input type="text" placeholder="Hledat produktyâ¦" aria-label="Hledat">
+      </div>
+      <div class="header-actions">
+        <a href="#" class="header-action"><i data-lucide="user"></i></a>
+        <a href="#" class="header-action" style="position:relative">
+          <i data-lucide="shopping-bag"></i><span class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="cavallino-mio-homepage.html">DomÅ¯</a>
+      <i data-lucide="chevron-right"></i>
+      <span class="breadcrumb-current">O nÃ¡s</span>
+    </nav>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <p class="label">NÃ¡Å¡ pÅÃ­bÄh</p>
+    <h1>JezdeckÃ© potÅeby<br>od tÄch, kteÅÃ­ jezdÃ­</h1>
+    <p>Cavallino mio vzniklo z lÃ¡sky ke konÃ­m a pÅesvÄdÄenÃ­, Å¾e kaÅ¾dÃ½ jezdec si zaslouÅ¾Ã­ kvalitnÃ­ vybavenÃ­ za rozumnou cenu.</p>
+  </div>
+</div>
+
+<!-- STORY -->
+<section class="section story-section">
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-img reveal">
+        <div class="story-img-inner">
+          <i data-lucide="image"></i>
+          <p>Foto: majitelka nebo stÃ¡j<br><span style="font-size:13px">(doplnÃ­ klientka)</span></p>
+        </div>
+        <div class="story-img-accent">2026</div>
+      </div>
+      <div class="story-text reveal" style="transition-delay:.12s">
+        <p class="label">Jak to zaÄalo</p>
+        <h2>Za kaÅ¾dÃ½m dobrÃ½m jezdcem stojÃ­ sprÃ¡vnÃ© vybavenÃ­</h2>
+        <p>JezdeckÃ½ sport je vÃ¡Å¡eÅ. A kaÅ¾dÃ¡ vÃ¡Å¡eÅ si zaslouÅ¾Ã­ sprÃ¡vnÃ© nÃ¡stroje. Proto jsme v roce 2026 otevÅeli Cavallino mio â mÃ­sto, kde najdete vybavenÃ­ peÄlivÄ vybranÃ© lidmi, kteÅÃ­ jezdÃ­ sami.</p>
+        <p>VÃ­me, co hledat na pÅilbÄ, aby skuteÄnÄ chrÃ¡nila. VÃ­me, jak mÃ¡ sednout vesta, aby byla pohodlnÃ¡ i bezpeÄnÃ¡. A vÃ­me, jak dÅ¯leÅ¾itÃ© je mÃ­t v koÅ¡Ã­ku konÄ to, co mu skuteÄnÄ prospÃ­vÃ¡.</p>
+        <p>Nakupujete u lidÃ­, kteÅÃ­ sdÃ­lejÃ­ VaÅ¡i vÃ¡Å¡eÅ. Nejste zÃ¡kaznÃ­k v databÃ¡zi. Jsme tu pro VÃ¡s i VaÅ¡eho konÄ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section values-section">
+  <div class="container">
+    <div class="values-header reveal">
+      <p class="label">Co je pro nÃ¡s dÅ¯leÅ¾itÃ©</p>
+      <h2>NaÅ¡e hodnoty</h2>
+      <p>KaÅ¾dÃ© rozhodnutÃ­, kterÃ© dÄlÃ¡me, vychÃ¡zÃ­ ze ÄtyÅ zÃ¡kladnÃ­ch pÅesvÄdÄenÃ­.</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <div class="value-icon"><i data-lucide="shield-check"></i></div>
+        <h3>BezpeÄnost</h3>
+        <p>ProdÃ¡vÃ¡me pouze certifikovanÃ© produkty splÅujÃ­cÃ­ evropskÃ© bezpeÄnostnÃ­ normy. BezpeÄnost jezdce nenÃ­ tÃ©ma k diskusi.</p>
+      </div>
+      <div class="value-card reveal" style="transition-delay:.1s">
+        <div class="value-icon"><i data-lucide="heart"></i></div>
+        <h3>PoctivÃ½ vÃ½bÄr</h3>
+        <p>KaÅ¾dÃ½ produkt v nabÃ­dce si sami vybÃ­rÃ¡me a testujeme. Pokud bychom ho nekoupili pro sebe, nenabÃ­zÃ­me ho VÃ¡m.</p>
+      </div>
+      <div class="value-card reveal" style="transition-delay:.2s">
+        <div class="value-icon"><i data-lucide="message-circle"></i></div>
+        <h3>LidskÃ½ pÅÃ­stup</h3>
+        <p>PoradÃ­me s vÃ¹bÄrem velikosti, porovnÃ¡me produkty a zodpovÃ­me kaÅ¾dÃ½ dotaz. VÅ¾dy s chutÃ­ a ochotou.</p>
+      </div>
+      <div class="value-card reveal" style="transition-delay:.3s">
+        <div class="value-icon"><i data-lucide="leaf"></i></div>
+        <h3>FÃ©rovost</h3>
+        <p>Ceny bez zbyteÄnÃ½ch pÅirÃ¡Å¾ek, jasnÃ© podmÃ­nky vrÃ¡cenÃ­ a Å¾Ã¡dnÃ© skrytÃ© poplatky. Obchod postavenÃ½ na dÅ¯vÄÅe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE STRIP -->
+<div class="promise-strip">
+  <div class="container">
+    <div class="promise-inner">
+      <div class="promise-item reveal">
+        <i data-lucide="truck"></i>
+        <h3>RychlÃ© doruÄenÃ­</h3>
+        <p>OdesÃ­lÃ¡me do 2 pracovnÃ­ch dnÅ¯. PPL nebo ZÃ¡silkovna, Vy si vyberete.</p>
+      </div>
+      <div class="promise-item reveal" style="transition-delay:.1s">
+        <i data-lucide="rotate-ccw"></i>
+        <h3>VrÃ¡cenÃ­ do 30 dnÅ¯</h3>
+        <p>NesedÃ­ velikost? JednoduchÃ© vrÃ¡cenÃ­ bez zbyteÄnÃ½ch otÃ¡zek.</p>
+      </div>
+      <div class="promise-item reveal" style="transition-delay:.2s">
+        <i data-lucide="lock"></i>
+        <h3>BezpeÄnÃ¡ platba</h3>
+        <p>PlatebnÃ­ brÃ¡na Comgate. Kartou, pÅevodem nebo na dobÃ­rku.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT CTA -->
+<section class="section contact-section">
+  <div class="container">
+    <div class="contact-header reveal">
+      <p class="label">Jsme tu pro VÃ¡s</p>
+      <h2>MÃ¡te otÃ¡zku nebo potÅebujete poradit?</h2>
+      <p>NevÃ¡hejte se ozvat. RÃ¡di pomÅ¯Å¾eme s vÃ½bÄrem sprÃ¡vnÃ© velikosti, porovnÃ¡me produkty nebo zodpovÃ­me cokoliv, co VÃ¡s zajÃ­mÃ¡.</p>
+    </div>
+    <div class="contact-cards reveal">
+      <div class="contact-card">
+        <div class="contact-card-icon"><i data-lucide="phone"></i></div>
+        <h3>Zavolejte nÃ¡m</h3>
+        <p>RÃ¡di s VÃ¡mi probereme vÃ½bÄr vybavenÃ­ osobnÄ. VolÃ¡me rÃ¡di.</p>
+        <a href="tel:+420600123456" class="contact-link">+420 600 123 456</a>
+        <p class="contact-note">Po aÅ¾ PÃ¡, 9:00 do 17:00</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon"><i data-lucide="mail"></i></div>
+        <h3>NapiÅ¡te nÃ¡m</h3>
+        <p>Na email odpovÃ­dÃ¡me zpravidla do nÄkolika hodin v pracovnÃ­ dny.</p>
+        <a href="mailto:info@cavallinomio.cz" class="contact-link">info@cavallinomio.cz</a>
+        <p class="contact-note">OdpovÃ­dÃ¡me do 24 hodin</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon"><i data-lucide="instagram"></i></div>
+        <h3>Sledujte nÃ¡s</h3>
+        <p>Na Instagramu sdÃ­lÃ­me tipy, novinky a zÃ¡kulisÃ­ z jezdeckÃ©ho svÄta.</p>
+        <a href="#" class="contact-link">@cavallinomio</a>
+        <p class="contact-note">Instagram a Facebook</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px" class="reveal">
+      <a href="cavallino-mio-homepage.html" class="btn btn-primary">
+        <i data-lucide="layout-grid"></i>
+        PÅejÃ­t do obchodu
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><div class="logo-icon"><i data-lucide="heart"></i></div><div class="logo-text"><strong>Cavallino mio</strong><span>JezdeckÃ© potÅeby</span></div></div>
+          <p>JezdeckÃ© potÅeby pro jezdce, konÄ i stÃ¡j. S lÃ¡skou k jezdectvÃ­ od roku 2026.</p>
+          <div class="footer-social"><a href="#"><i data-lucide="facebook"></i></a><a href="#"><i data-lucide="instagram"></i></a></div>
+        </div>
+        <div class="footer-col">
+          <h5>Kategorie</h5>
+          <ul>
+            <li><a href="cavallino-mio-category.html">PotÅeby pro jezdce</a></li>
+            <li><a href="#">PotÅeby pro konÄ</a></li>
+            <li><a href="#">PotÅeby pro stÃ¡j</a></li>
+            <li><a href="#">VÃ½prodej</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Informace</h5>
+          <ul>
+            <li><a href="cavallino-mio-about.html">O nÃ¡s</a></li>
+            <li><a href="#">Doprava a platba</a></li>
+            <li><a href="#">VrÃ¡cenÃ­ zboÅ¾Ã­</a></li>
+            <li><a href="#">ObchodnÃ­ podmÃ­nky</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Kontakt</h5>
+          <div class="footer-contact-item"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></div>
+          <div class="footer-contact-item"><i data-lucide="mail"></i><a href="mailto:info@cavallinomio.cz">info@cavallinomio.cz</a></div>
+          <div class="footer-contact-item"><i data-lucide="clock"></i><span>Po aÅ¾ PÃ¡, 9:00 do 17:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>Â© 2026 Cavallino mio. VÅ¡echna prÃ¡va vyhrazena.</span>
+      <div class="footer-bottom-links"><a href="#">ObchodnÃ­ podmÃ­nky</a><a href="#">Cookies</a><a href="#">GDPR</a></div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up"></i></button>
+
+<script>
+lucide.createIcons();
+window.addEventListener('scroll',()=>document.getElementById('backTop').classList.toggle('visible',scrollY>300));
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
