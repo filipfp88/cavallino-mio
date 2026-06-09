@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakty | Cavallino mio</title>
+<link rel="stylesheet" href="fonts.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Lato',Arial,sans-serif;font-size:16px;line-height:1.6;color:#1A1A1A;background:#F8F6F2}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,textarea,select{font-family:inherit}
+:root{
+  --green:#2B5436;--green-dark:#1D3B25;--green-light:#E8F1EB;
+  --brown:#A67C4E;--brown-light:#F5EDE0;
+  --bg:#F8F6F2;--white:#FFFFFF;--border:#E2DAD0;
+  --text:#1A1A1A;--text-mid:#4A4A4A;--text-muted:#767676;
+  --radius:6px;--shadow:0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:0 6px 28px rgba(0,0,0,0.11);--transition:0.2s ease;--max:1260px;
+}
+[data-lucide]{display:inline-block;vertical-align:middle;stroke-width:1.8}
+.topbar [data-lucide]{width:14px;height:14px}
+.header-action [data-lucide]{width:20px;height:20px}
+.nav-primary [data-lucide]{width:14px;height:14px}
+.btn [data-lucide]{width:17px;height:17px}
+.logo-icon [data-lucide]{width:22px;height:22px;color:white;stroke-width:1.5}
+.footer-contact-item [data-lucide]{width:15px;height:15px;flex-shrink:0;margin-top:3px}
+.footer-social [data-lucide]{width:16px;height:16px}
+.back-top [data-lucide]{width:18px;height:18px}
+.breadcrumb [data-lucide]{width:14px;height:14px;color:var(--text-muted)}
+.info-icon [data-lucide]{width:22px;height:22px;color:var(--green);flex-shrink:0}
+
+h1,h2,h3,h4{font-family:'Lora',Georgia,serif;font-weight:600;line-height:1.2}
+h1{font-size:clamp(32px,4vw,48px)}
+h2{font-size:clamp(24px,3vw,34px)}
+.label{font-size:14px;font-weight:700;color:var(--brown)}
+
+.container{max-width:var(--max);margin:0 auto;padding:0 32px}
+.section{padding:64px 0}
+
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;font-family:'Lato',sans-serif;padding:13px 28px;border-radius:var(--radius);transition:var(--transition);cursor:pointer;border:2px solid transparent;white-space:nowrap}
+.btn-primary{background:var(--green);color:var(--white);border-color:var(--green)}
+.btn-primary:hover{background:var(--green-dark);border-color:var(--green-dark)}
+
+/* TOP BAR */
+.topbar{background:var(--green-dark);color:var(--white);font-size:14px;height:36px;display:flex;align-items:center}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;width:100%}
+.topbar-left{display:flex;align-items:center;gap:24px}
+.topbar-right{display:flex;align-items:center;gap:20px}
+.topbar a{color:var(--white);opacity:.85;transition:opacity var(--transition)}
+.topbar a:hover{opacity:1}
+.topbar-icon{display:flex;align-items:center;gap:6px}
+
+/* HEADER */
+.header{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.header-inner{display:flex;align-items:center;gap:32px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-icon{width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.logo-text strong{display:block;font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--green)}
+.logo-text span{display:block;font-size:11px;color:var(--text-muted)}
+.nav-primary{flex:1}
+.nav-primary ul{display:flex;align-items:center;gap:4px}
+.nav-primary>ul>li{position:relative}
+.nav-primary>ul>li>a{display:flex;align-items:center;gap:4px;font-size:15px;font-weight:700;color:var(--text);padding:8px 14px;border-radius:var(--radius);transition:var(--transition);white-space:nowrap}
+.nav-primary>ul>li>a:hover,.nav-primary>ul>li>a.active{background:var(--green-light);color:var(--green)}
+.nav-dropdown{position:absolute;top:calc(100% + 8px);left:0;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);min-width:220px;padding:8px 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .18s ease;z-index:200}
+.nav-primary>ul>li:hover .nav-dropdown{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown li a{display:block;padding:9px 20px;font-size:15px;color:var(--text-mid);transition:var(--transition)}
+.nav-dropdown li a:hover{background:var(--green-light);color:var(--green);padding-left:26px}
+.header-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.header-action{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius);color:var(--text);transition:var(--transition)}
+.header-action:hover{background:var(--green-light);color:var(--green)}
+.cart-badge{position:absolute;top:4px;right:4px;background:var(--brown);color:var(--white);font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
+.search-bar{display:flex;align-items:center;background:var(--bg);border:1.5px solid var(--border);border-radius:100px;padding:0 16px;gap:8px;height:42px;transition:var(--transition);width:260px}
+.search-bar [data-lucide]{width:16px;height:16px;color:var(--text-muted);flex-shrink:0}
+.search-bar:focus-within{border-color:var(--green);background:var(--white);box-shadow:0 0 0 3px rgba(43,84,54,.12)}
+.search-bar input{border:none;background:transparent;outline:none;font-size:15px;color:var(--text);width:100%}
+.search-bar input::placeholder{color:var(--text-muted)}
+.nav-vyprodej{color:#C0392B!important}
+
+/* BREADCRUMB */
+.breadcrumb-bar{background:var(--white);border-bottom:1px solid var(--border);padding:12px 0}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-muted)}
+.breadcrumb a{color:var(--text-muted);transition:var(--transition)}
+.breadcrumb a:hover{color:var(--green)}
+.breadcrumb-current{color:var(--text);font-weight:700}
+
+/* PAGE HEADER */
+.page-header{background:var(--white);padding:48px 0 40px;border-bottom:1px solid var(--border)}
+.page-header .label{margin-bottom:10px}
+.page-header h1{margin-bottom:12px}
+.page-header p{font-size:17px;color:var(--text-mid);max-width:520px;line-height:1.7}
+
+/* CONTACT GRID */
+.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:start}
+
+/* Info column */
+.contact-info-block{display:flex;flex-direction:column;gap:32px}
+.info-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:28px}
+.info-card h3{font-family:'Lato',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px;color:var(--text)}
+.info-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;font-size:16px;color:var(--text-mid)}
+.info-item:last-child{margin-bottom:0}
+.info-item a{color:var(--green);font-weight:700;transition:var(--transition)}
+.info-item a:hover{text-decoration:underline}
+
+/* Map */
+.map-placeholder{
+  background:linear-gradient(135deg,#E8F1EB,#D0E4D5);
+  border-radius:10px;border:1px solid var(--border);
+  height:220px;display:flex;align-items:center;justify-content:center;
+  color:var(--text-muted);flex-direction:column;gap:10px;
+  font-size:15px;text-align:center;padding:24px;
+}
+.map-placeholder [data-lucide]{width:40px;height:40px;opacity:.35;color:var(--green)}
+
+/* Hours table */
+.hours-table{width:100%;border-collapse:collapse}
+.hours-table tr{border-bottom:1px solid var(--border)}
+.hours-table tr:last-child{border-bottom:none}
+.hours-table td{padding:8px 0;font-size:15px;color:var(--text-mid)}
+.hours-table td:first-child{font-weight:700;color:var(--text);width:130px}
+.hours-open{color:var(--green)!important}
+
+/* Form column */
+.contact-form-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:36px}
+.contact-form-card h2{margin-bottom:6px}
+.contact-form-card .subtitle{font-size:16px;color:var(--text-muted);margin-bottom:28px;line-height:1.6}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-group label{font-size:15px;font-weight:700;color:var(--text)}
+.form-group label .req{color:#C0392B;margin-left:2px}
+.form-input,.form-textarea{
+  padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius);
+  font-size:16px;color:var(--text);background:var(--bg);
+  outline:none;transition:border-color var(--transition),box-shadow var(--transition);
+  width:100%;
+}
+.form-input:focus,.form-textarea:focus{
+  border-color:var(--green);background:var(--white);
+  box-shadow:0 0 0 3px rgba(43,84,54,.1);
+}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text-muted)}
+.form-textarea{resize:vertical;min-height:130px;line-height:1.65}
+.form-select{
+  padding:11px 40px 11px 14px;border:1.5px solid var(--border);border-radius:var(--radius);
+  font-size:16px;color:var(--text);background:var(--bg);
+  outline:none;appearance:none;cursor:pointer;width:100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23767676' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.form-select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(43,84,54,.1)}
+.form-note{font-size:14px;color:var(--text-muted);margin-top:12px;line-height:1.55}
+.form-note a{color:var(--green);text-decoration:underline}
+
+/* Success message (hidden by default) */
+.form-success{
+  display:none;background:var(--green-light);border:1px solid rgba(43,84,54,.2);
+  border-radius:var(--radius);padding:18px 20px;margin-top:16px;
+  font-size:16px;color:var(--green);font-weight:700;
+  align-items:center;gap:10px;
+}
+.form-success [data-lucide]{width:20px;height:20px;flex-shrink:0}
+
+/* FOOTER */
+.footer{background:#111C14;color:rgba(255,255,255,.82)}
+.footer-top{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px}
+.footer-brand .logo-text strong{color:#9AC9A8}
+.footer-brand .logo-text span{color:rgba(255,255,255,.35)}
+.footer-brand .logo-icon{background:rgba(255,255,255,.08)}
+.footer-brand p{font-size:15px;color:rgba(255,255,255,.65);margin-top:16px;line-height:1.75;max-width:240px}
+.footer-social{display:flex;gap:10px;margin-top:20px}
+.footer-social a{width:38px;height:38px;background:rgba(255,255,255,.08);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);transition:var(--transition)}
+.footer-social a:hover{background:var(--green);color:var(--white)}
+.footer-col h5{font-size:14px;font-weight:700;color:rgba(255,255,255,.38);margin-bottom:16px}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:15px;color:rgba(255,255,255,.68);transition:var(--transition)}
+.footer-col ul li a:hover{color:var(--white);padding-left:4px}
+.footer-contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;font-size:15px;color:rgba(255,255,255,.68)}
+.footer-contact-item [data-lucide]{color:var(--brown)}
+.footer-bottom{padding:20px 0;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:rgba(255,255,255,.38)}
+.footer-bottom a{color:rgba(255,255,255,.45);transition:var(--transition)}
+.footer-bottom a:hover{color:var(--white)}
+.footer-bottom-links{display:flex;gap:20px}
+.back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:90;cursor:pointer;border:none}
+.back-top.visible{opacity:1;transform:translateY(0)}
+.back-top:hover{background:var(--green-dark)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <span class="topbar-icon"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></span>
+      <span style="opacity:.35">|</span><span>Po aÅ¾ PÃ¡, 9:00 do 17:00</span>
+    </div>
+    <div class="topbar-right">
+      <a href="cavallino-mio-about.html">O nÃ¡s</a>
+      <a href="cavallino-mio-contact.html" style="font-weight:700;opacity:1">Kontakty</a>
+      <a href="#">Doprava a platba</a>
+      <span style="opacity:.35">|</span>
+      <a href="#" style="font-weight:700">PÅihlÃ¡sit se</a>
+    </div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="cavallino-mio-homepage.html" class="logo">
+        <div class="logo-icon"><i data-lucide="heart"></i></div>
+        <div class="logo-text"><strong>Cavallino mio</strong><span>JezdeckÃ© potÅeby</span></div>
+      </a>
+      <nav class="nav-primary">
+        <ul>
+          <li>
+            <a href="cavallino-mio-category.html">PotÅeby pro jezdce <i data-lucide="chevron-down"></i></a>
+            <ul class="nav-dropdown">
+              <li><a href="cavallino-mio-category.html">PÅilby a helmy</a></li>
+              <li><a href="cavallino-mio-category.html">JezdeckÃ© kalhoty</a></li>
+              <li><a href="cavallino-mio-category.html">Boty a ÄiÅ¾my</a></li>
+              <li><a href="cavallino-mio-category.html">BezpeÄnostnÃ­ vesty</a></li>
+            </ul>
+          </li>
+          <li><a href="#">PotÅeby pro konÄ <i data-lucide="chevron-down"></i></a></li>
+          <li><a href="#">PotÅeby pro stÃ¡j <i data-lucide="chevron-down"></i></a></li>
+          <li><a href="#" class="nav-vyprodej">VÃ½prodej</a></li>
+        </ul>
+      </nav>
+      <div class="search-bar"><i data-lucide="search"></i><input type="text" placeholder="Hledat produktyâ¦"></div>
+      <div class="header-actions">
+        <a href="#" class="header-action"><i data-lucide="user"></i></a>
+        <a href="cavallino-mio-cart.html" class="header-action" style="position:relative">
+          <i data-lucide="shopping-bag"></i><span class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="cavallino-mio-homepage.html">DomÅ¯</a>
+      <i data-lucide="chevron-right"></i>
+      <span class="breadcrumb-current">Kontakty</span>
+    </nav>
+  </div>
+</div>
+
+<div class="page-header">
+  <div class="container">
+    <p class="label">Jsme tu pro VÃ¡s</p>
+    <h1>Kontaktujte nÃ¡s</h1>
+    <p>MÃ¡te dotaz k produktu, potÅebujete poradit s vÃ½bÄrem nebo reklamovat zboÅ¾Ã­? OzvÄte se, rÃ¡di pomÅ¯Å¾eme.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Info -->
+      <div class="contact-info-block">
+        <div class="info-card">
+          <h3>KontaktnÃ­ Ãºdaje</h3>
+          <div class="info-item">
+            <i data-lucide="phone" class="info-icon"></i>
+            <div>
+              <a href="tel:+420600123456">+420 600 123 456</a>
+              <div style="font-size:14px;color:var(--text-muted);margin-top:2px">Po aÅ¾ PÃ¡, 9:00 do 17:00</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <i data-lucide="mail" class="info-icon"></i>
+            <div>
+              <a href="mailto:info@cavallinomio.cz">info@cavallinomio.cz</a>
+              <div style="font-size:14px;color:var(--text-muted);margin-top:2px">OdpovÃ­dÃ¡me do 24 hodin</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <i data-lucide="map-pin" class="info-icon"></i>
+            <div>
+              UkÃ¡zkovÃ¡ ulice 12<br>
+              110 00 Praha 1
+            </div>
+          </div>
+          <div class="info-item">
+            <i data-lucide="instagram" class="info-icon"></i>
+            <div>
+              <a href="#">@cavallinomio</a>
+              <div style="font-size:14px;color:var(--text-muted);margin-top:2px">Instagram a Facebook</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>ProvoznÃ­ hodiny</h3>
+          <table class="hours-table">
+            <tr><td>PondÄlÃ­</td><td class="hours-open">9:00 do 17:00</td></tr>
+            <tr><td>ÃterÃ½</td><td class="hours-open">9:00 do 17:00</td></tr>
+            <tr><td>StÅeda</td><td class="hours-open">9:00 do 17:00</td></tr>
+            <tr><td>Ätvrtek</td><td class="hours-open">9:00 do 17:00</td></tr>
+            <tr><td>PÃ¡tek</td><td class="hours-open">9:00 do 16:00</td></tr>
+            <tr><td>Sobota</td><td style="color:var(--text-muted)">ZavÅeno</td></tr>
+            <tr><td>NedÄle</td><td style="color:var(--text-muted)">ZavÅeno</td></tr>
+          </table>
+        </div>
+
+        <div class="map-placeholder">
+          <i data-lucide="map"></i>
+          <div>
+            <strong style="color:var(--green)">Mapa bude doplnÄna</strong><br>
+            Google Maps embed â UkÃ¡zkovÃ¡ ulice 12, Praha 1
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="contact-form-card">
+        <h2>NapiÅ¡te nÃ¡m</h2>
+        <p class="subtitle">VyplÅte formulÃ¡Å a ozveme se VÃ¡m co nejdÅÃ­ve. PovinnÃ¡ pole jsou oznaÄena hvÄzdiÄkou.</p>
+
+        <form id="contactForm" onsubmit="submitForm(event)">
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0">
+              <label>JmÃ©no <span class="req">*</span></label>
+              <input type="text" class="form-input" placeholder="VaÅ¡e jmÃ©no" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>PÅÃ­jmenÃ­ <span class="req">*</span></label>
+              <input type="text" class="form-input" placeholder="VaÅ¡e pÅÃ­jmenÃ­" required>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0">
+              <label>E-mail <span class="req">*</span></label>
+              <input type="email" class="form-input" placeholder="vas@email.cz" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Telefon</label>
+              <input type="tel" class="form-input" placeholder="+420 000 000 000">
+            </div>
+          </div>
+          <div style="height:16px"></div>
+
+          <div class="form-group">
+            <label>TÃ½kÃ¡ se <span class="req">*</span></label>
+            <select class="form-select" required>
+              <option value="" disabled selected>Vyberte tÃ©ma dotazu</option>
+              <option>Dotaz k produktu</option>
+              <option>Pomoc s vÃ½bÄrem velikosti</option>
+              <option>ObjednÃ¡vka a doprava</option>
+              <option>Reklamace</option>
+              <option>VrÃ¡cenÃ­ zboÅ¾Ã­</option>
+              <option>JinÃ©</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>ÄÃ­slo objednÃ¡vky</label>
+            <input type="text" class="form-input" placeholder="NapÅ. #1234 (nepovinnÃ©)">
+          </div>
+
+          <div class="form-group">
+            <label>ZprÃ¡va <span class="req">*</span></label>
+            <textarea class="form-textarea" placeholder="NapiÅ¡te nÃ¡m, s ÄÃ­m VÃ¡m mÅ¯Å¾eme pomociâ¦" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">
+            <i data-lucide="send"></i>
+            Odeslat zprÃ¡vu
+          </button>
+
+          <div class="form-success" id="formSuccess">
+            <i data-lucide="check-circle"></i>
+            ZprÃ¡va odeslÃ¡na! Ozveme se VÃ¡m co nejdÅÃ­ve.
+          </div>
+
+          <p class="form-note">OdeslÃ¡nÃ­m formulÃ¡Åe souhlasÃ­te se zpracovÃ¡nÃ­m osobnÃ­ch ÃºdajÅ¯ za ÃºÄelem vyÅÃ­zenÃ­ VaÅ¡eho dotazu. <a href="#">VÃ­ce informacÃ­ o zpracovÃ¡nÃ­ dat.</a></p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><div class="logo-icon"><i data-lucide="heart"></i></div><div class="logo-text"><strong>Cavallino mio</strong><span>JezdeckÃ© potÅeby</span></div></div>
+          <p>JezdeckÃ© potÅeby pro jezdce, konÄ i stÃ¡j.</p>
+          <div class="footer-social"><a href="#"><i data-lucide="facebook"></i></a><a href="#"><i data-lucide="instagram"></i></a></div>
+        </div>
+        <div class="footer-col"><h5>Kategorie</h5><ul><li><a href="cavallino-mio-category.html">PotÅeby pro jezdce</a></li><li><a href="#">PotÅeby pro konÄ</a></li><li><a href="#">PotÅeby pro stÃ¡j</a></li><li><a href="#">VÃ½prodej</a></li></ul></div>
+        <div class="footer-col"><h5>Informace</h5><ul><li><a href="cavallino-mio-about.html">O nÃ¡s</a></li><li><a href="#">Doprava a platba</a></li><li><a href="#">VrÃ¡cenÃ­ zboÅ¾Ã­</a></li><li><a href="#">ObchodnÃ­ podmÃ­nky</a></li></ul></div>
+        <div class="footer-col"><h5>Kontakt</h5>
+          <div class="footer-contact-item"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></div>
+          <div class="footer-contact-item"><i data-lucide="mail"></i><a href="mailto:info@cavallinomio.cz">info@cavallinomio.cz</a></div>
+          <div class="footer-contact-item"><i data-lucide="clock"></i><span>Po aÅ¾ PÃ¡, 9:00 do 17:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container"><div class="footer-bottom"><span>Â© 2026 Cavallino mio. VÅ¡echna prÃ¡va vyhrazena.</span><div class="footer-bottom-links"><a href="#">ObchodnÃ­ podmÃ­nky</a><a href="#">Cookies</a><a href="#">GDPR</a></div></div></div>
+</footer>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up"></i></button>
+
+<script>
+lucide.createIcons();
+window.addEventListener('scroll',()=>document.getElementById('backTop').classList.toggle('visible',scrollY>300));
+function submitForm(e){
+  e.preventDefault();
+  const s=document.getElementById('formSuccess');
+  s.style.display='flex';
+  lucide.createIcons();
+  e.target.querySelectorAll('input,textarea,select,button[type=submit]').forEach(el=>el.disabled=true);
+}
+</script>
+</body>
+</html>
