@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>O nÃ¡s | Cavallino mio</title>
+<title>O nás | Cavallino mio</title>
 <link rel="stylesheet" href="fonts.css">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
@@ -130,6 +130,14 @@ h3{font-size:clamp(20px,2.5vw,26px)}
 .story-text h2{margin-bottom:20px}
 .story-text p{font-size:16px;color:var(--text-mid);line-height:1.85;margin-bottom:16px}
 
+/* STATS BAR */
+.stats-bar{background:var(--green);padding:48px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.stat-item{}
+.stat-number{font-family:'Lora',Georgia,serif;font-size:clamp(36px,4vw,52px);font-weight:600;color:var(--white);line-height:1;margin-bottom:8px}
+.stat-number em{font-style:normal;color:#C9A97A}
+.stat-label{font-size:15px;color:rgba(255,255,255,.75);line-height:1.45}
+
 /* VALUES */
 .values-section{background:var(--bg)}
 .values-header{text-align:center;margin-bottom:52px}
@@ -169,7 +177,7 @@ h3{font-size:clamp(20px,2.5vw,26px)}
 .contact-note{font-size:14px;color:var(--text-muted);margin-top:6px}
 
 /* FOOTER */
-.footer{background:#111C14;color:rgba(255,255,255,.82]}
+.footer{background:#111C14;color:rgba(255,255,255,.82)}
 .footer-top{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.1)}
 .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px}
 .footer-brand .logo-text strong{color:#9AC9A8}
@@ -205,14 +213,14 @@ h3{font-size:clamp(20px,2.5vw,26px)}
     <div class="topbar-left">
       <span class="topbar-icon"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></span>
       <span style="opacity:.35">|</span>
-      <span>Po aÅ¾ PÃ¡, 9:00 do 17:00</span>
+      <span>Po až Pá, 9:00 do 17:00</span>
     </div>
     <div class="topbar-right">
-      <a href="cavallino-mio-about.html" style="font-weight:700;opacity:1">O nÃ¡s</a>
+      <a href="cavallino-mio-about.html" style="font-weight:700;opacity:1">O nás</a>
       <a href="#">Kontakty</a>
       <a href="#">Doprava a platba</a>
       <span style="opacity:.35">|</span>
-      <a href="#" style="font-weight:700">PÅihlÃ¡sit se</a>
+      <a href="#" style="font-weight:700">Přihlásit se</a>
     </div>
   </div>
 </div>
@@ -223,41 +231,41 @@ h3{font-size:clamp(20px,2.5vw,26px)}
     <div class="header-inner">
       <a href="cavallino-mio-homepage.html" class="logo">
         <div class="logo-icon"><i data-lucide="heart"></i></div>
-        <div class="logo-text"><strong>Cavallino mio</strong><span>JezdeckÃ© potÅeby</span></div>
+        <div class="logo-text"><strong>Cavallino mio</strong><span>Jezdecké potřeby</span></div>
       </a>
       <nav class="nav-primary">
         <ul>
           <li>
-            <a href="cavallino-mio-category.html">PotÅeby pro jezdce <i data-lucide="chevron-down"></i></a>
+            <a href="cavallino-mio-category.html">Potřeby pro jezdce <i data-lucide="chevron-down"></i></a>
             <ul class="nav-dropdown">
-              <li><a href="cavallino-mio-category.html">PÅilby a helmy</a></li>
-              <li><a href="cavallino-mio-category.html">JezdeckÃ© kalhoty</a></li>
-              <li><a href="cavallino-mio-category.html">Boty a ÄiÅ¾my</a></li>
+              <li><a href="cavallino-mio-category.html">Přilby a helmy</a></li>
+              <li><a href="cavallino-mio-category.html">Jezdecké kalhoty</a></li>
+              <li><a href="cavallino-mio-category.html">Boty a čižmy</a></li>
               <li><a href="cavallino-mio-category.html">Rukavice</a></li>
-              <li><a href="cavallino-mio-category.html">BezpeÄnostnÃ­ vesty</a></li>
+              <li><a href="cavallino-mio-category.html">Bezpečnostní vesty</a></li>
             </ul>
           </li>
           <li>
-            <a href="#">PotÅeby pro konÄ <i data-lucide="chevron-down"></i></a>
+            <a href="#">Potřeby pro koně <i data-lucide="chevron-down"></i></a>
             <ul class="nav-dropdown">
-              <li><a href="#">Udidla a nÃ¡hlavnÃ­ky</a></li>
-              <li><a href="#">Sedla a podsedlovÃ© deÄky</a></li>
-              <li><a href="#">Deky a Äabraky</a></li>
+              <li><a href="#">Udidla a náhlavníky</a></li>
+              <li><a href="#">Sedla a podsedlové dečky</a></li>
+              <li><a href="#">Deky a čabraky</a></li>
             </ul>
           </li>
           <li>
-            <a href="#">PotÅeby pro stÃ¡j <i data-lucide="chevron-down"></i></a>
+            <a href="#">Potřeby pro stáj <i data-lucide="chevron-down"></i></a>
             <ul class="nav-dropdown">
-              <li><a href="#">KbelÃ­ky a koryta</a></li>
-              <li><a href="#">VybavenÃ­ stÃ¡je</a></li>
+              <li><a href="#">Kbelíky a koryta</a></li>
+              <li><a href="#">Vybavení stáje</a></li>
             </ul>
           </li>
-          <li><a href="#" class="nav-vyprodej">VÃ½prodej</a></li>
+          <li><a href="#" class="nav-vyprodej">Výprodej</a></li>
         </ul>
       </nav>
       <div class="search-bar">
         <i data-lucide="search"></i>
-        <input type="text" placeholder="Hledat produktyâ¦" aria-label="Hledat">
+        <input type="text" placeholder="Hledat produkty…" aria-label="Hledat">
       </div>
       <div class="header-actions">
         <a href="#" class="header-action"><i data-lucide="user"></i></a>
@@ -268,14 +276,26 @@ h3{font-size:clamp(20px,2.5vw,26px)}
     </div>
   </div>
 </header>
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <span class="trust-item"><i data-lucide="truck"></i> Doprava zdarma nad 1 500 Kč</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="rotate-ccw"></i> Vrácení do 30 dní</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="shield-check"></i> Certifikované produkty</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="phone"></i> Česká zákaznická podpora</span>
+  </div>
+</div>
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb-bar">
   <div class="container">
     <nav class="breadcrumb">
-      <a href="cavallino-mio-homepage.html">DomÅ¯</a>
+      <a href="cavallino-mio-homepage.html">Domů</a>
       <i data-lucide="chevron-right"></i>
-      <span class="breadcrumb-current">O nÃ¡s</span>
+      <span class="breadcrumb-current">O nás</span>
     </nav>
   </div>
 </div>
@@ -283,9 +303,9 @@ h3{font-size:clamp(20px,2.5vw,26px)}
 <!-- PAGE HERO -->
 <div class="page-hero">
   <div class="container">
-    <p class="label">NÃ¡Å¡ pÅÃ­bÄh</p>
-    <h1>JezdeckÃ© potÅeby<br>od tÄch, kteÅÃ­ jezdÃ­</h1>
-    <p>Cavallino mio vzniklo z lÃ¡sky ke konÃ­m a pÅesvÄdÄenÃ­, Å¾e kaÅ¾dÃ½ jezdec si zaslouÅ¾Ã­ kvalitnÃ­ vybavenÃ­ za rozumnou cenu.</p>
+    <p class="label">Náš příběh</p>
+    <h1>Jezdecké potřeby<br>od těch, kteří jezdí</h1>
+    <p>Cavallino mio vzniklo z lásky ke koním a přesvědčení, že každý jezdec si zaslouží kvalitní vybavení za rozumnou cenu.</p>
   </div>
 </div>
 
@@ -296,49 +316,74 @@ h3{font-size:clamp(20px,2.5vw,26px)}
       <div class="story-img reveal">
         <div class="story-img-inner">
           <i data-lucide="image"></i>
-          <p>Foto: majitelka nebo stÃ¡j<br><span style="font-size:13px">(doplnÃ­ klientka)</span></p>
+          <p>Foto: majitelka nebo stáj<br><span style="font-size:13px">(doplní klientka)</span></p>
         </div>
         <div class="story-img-accent">2026</div>
       </div>
       <div class="story-text reveal" style="transition-delay:.12s">
-        <p class="label">Jak to zaÄalo</p>
-        <h2>Za kaÅ¾dÃ½m dobrÃ½m jezdcem stojÃ­ sprÃ¡vnÃ© vybavenÃ­</h2>
-        <p>JezdeckÃ½ sport je vÃ¡Å¡eÅ. A kaÅ¾dÃ¡ vÃ¡Å¡eÅ si zaslouÅ¾Ã­ sprÃ¡vnÃ© nÃ¡stroje. Proto jsme v roce 2026 otevÅeli Cavallino mio â mÃ­sto, kde najdete vybavenÃ­ peÄlivÄ vybranÃ© lidmi, kteÅÃ­ jezdÃ­ sami.</p>
-        <p>VÃ­me, co hledat na pÅilbÄ, aby skuteÄnÄ chrÃ¡nila. VÃ­me, jak mÃ¡ sednout vesta, aby byla pohodlnÃ¡ i bezpeÄnÃ¡. A vÃ­me, jak dÅ¯leÅ¾itÃ© je mÃ­t v koÅ¡Ã­ku konÄ to, co mu skuteÄnÄ prospÃ­vÃ¡.</p>
-        <p>Nakupujete u lidÃ­, kteÅÃ­ sdÃ­lejÃ­ VaÅ¡i vÃ¡Å¡eÅ. Nejste zÃ¡kaznÃ­k v databÃ¡zi. Jsme tu pro VÃ¡s i VaÅ¡eho konÄ.</p>
+        <p class="label">Jak to začalo</p>
+        <h2>Za každým dobrým jezdcem stojí správné vybavení</h2>
+        <p>Jezdecký sport je vášeň. A každá vášeň si zaslouží správné nástroje. Proto jsme v roce 2026 otevřeli Cavallino mio — místo, kde najdete vybavení pečlivě vybrané lidmi, kteří jezdí sami.</p>
+        <p>Víme, co hledat na přilbě, aby skutečně chránila — certifikace EN 1384, VG1 a správná poloha zapínání jsou detaily, na kterých záleží. Víme, jak má sednout vesta, aby byla pohodlná i bezpečná i po třech hodinách v sedle. A víme, jak důležité je vybrat správnou velikost, protože příliš volná přilba nechrání tak jak má.</p>
+        <p>V týmu máme jezdce všech úrovní — od rekreačních po závodníky. Společně testujeme každý produkt, než ho přidáme do nabídky. Pokud bychom ho nedoporučili vlastní dceři nebo kamarádovi, nenabízíme ho ani Vám.</p>
+        <p>Nakupujete u lidí, kteří sdílejí Vaši vášeň. Nejste zákazník v databázi. Jsme tu pro Vás i Vašeho koně.</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">450<em>+</em></div>
+        <div class="stat-label">spokojených zákazníků<br>za první rok</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.1s">
+        <div class="stat-number">200<em>+</em></div>
+        <div class="stat-label">pečlivě vybraných<br>produktů v nabídce</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.2s">
+        <div class="stat-number">15<em>+</em></div>
+        <div class="stat-label">let aktivního<br>jezdectví v týmu</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.3s">
+        <div class="stat-number">100<em>%</em></div>
+        <div class="stat-label">certifikované produkty<br>dle EU norem</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- VALUES -->
 <section class="section values-section">
   <div class="container">
     <div class="values-header reveal">
-      <p class="label">Co je pro nÃ¡s dÅ¯leÅ¾itÃ©</p>
-      <h2>NaÅ¡e hodnoty</h2>
-      <p>KaÅ¾dÃ© rozhodnutÃ­, kterÃ© dÄlÃ¡me, vychÃ¡zÃ­ ze ÄtyÅ zÃ¡kladnÃ­ch pÅesvÄdÄenÃ­.</p>
+      <p class="label">Co je pro nás důležité</p>
+      <h2>Naše hodnoty</h2>
+      <p>Každé rozhodnutí, které děláme, vychází ze čtyř základních přesvědčení.</p>
     </div>
     <div class="values-grid">
       <div class="value-card reveal">
         <div class="value-icon"><i data-lucide="shield-check"></i></div>
-        <h3>BezpeÄnost</h3>
-        <p>ProdÃ¡vÃ¡me pouze certifikovanÃ© produkty splÅujÃ­cÃ­ evropskÃ© bezpeÄnostnÃ­ normy. BezpeÄnost jezdce nenÃ­ tÃ©ma k diskusi.</p>
+        <h3>Bezpečnost</h3>
+        <p>Prodáváme pouze certifikované produkty splňující evropské bezpečnostní normy. Bezpečnost jezdce není téma k diskusi.</p>
       </div>
       <div class="value-card reveal" style="transition-delay:.1s">
         <div class="value-icon"><i data-lucide="heart"></i></div>
-        <h3>PoctivÃ½ vÃ½bÄr</h3>
-        <p>KaÅ¾dÃ½ produkt v nabÃ­dce si sami vybÃ­rÃ¡me a testujeme. Pokud bychom ho nekoupili pro sebe, nenabÃ­zÃ­me ho VÃ¡m.</p>
+        <h3>Poctivý výběr</h3>
+        <p>Každý produkt v nabídce si sami vybíráme a testujeme. Pokud bychom ho nekoupili pro sebe, nenabízíme ho Vám.</p>
       </div>
       <div class="value-card reveal" style="transition-delay:.2s">
         <div class="value-icon"><i data-lucide="message-circle"></i></div>
-        <h3>LidskÃ½ pÅÃ­stup</h3>
-        <p>PoradÃ­me s vÃ¹bÄrem velikosti, porovnÃ¡me produkty a zodpovÃ­me kaÅ¾dÃ½ dotaz. VÅ¾dy s chutÃ­ a ochotou.</p>
+        <h3>Lidský přístup</h3>
+        <p>Poradíme s výběrem velikosti, porovnáme produkty a zodpovíme každý dotaz. Vždy s chutí a ochotou.</p>
       </div>
       <div class="value-card reveal" style="transition-delay:.3s">
         <div class="value-icon"><i data-lucide="leaf"></i></div>
-        <h3>FÃ©rovost</h3>
-        <p>Ceny bez zbyteÄnÃ½ch pÅirÃ¡Å¾ek, jasnÃ© podmÃ­nky vrÃ¡cenÃ­ a Å¾Ã¡dnÃ© skrytÃ© poplatky. Obchod postavenÃ½ na dÅ¯vÄÅe.</p>
+        <h3>Férovost</h3>
+        <p>Ceny bez zbytečných přirážek, jasné podmínky vrácení a žádné skryté poplatky. Obchod postavený na důvěře.</p>
       </div>
     </div>
   </div>
@@ -350,18 +395,18 @@ h3{font-size:clamp(20px,2.5vw,26px)}
     <div class="promise-inner">
       <div class="promise-item reveal">
         <i data-lucide="truck"></i>
-        <h3>RychlÃ© doruÄenÃ­</h3>
-        <p>OdesÃ­lÃ¡me do 2 pracovnÃ­ch dnÅ¯. PPL nebo ZÃ¡silkovna, Vy si vyberete.</p>
+        <h3>Rychlé doručení</h3>
+        <p>Odesíláme do 2 pracovních dnů. PPL nebo Zásilkovna, Vy si vyberete.</p>
       </div>
       <div class="promise-item reveal" style="transition-delay:.1s">
         <i data-lucide="rotate-ccw"></i>
-        <h3>VrÃ¡cenÃ­ do 30 dnÅ¯</h3>
-        <p>NesedÃ­ velikost? JednoduchÃ© vrÃ¡cenÃ­ bez zbyteÄnÃ½ch otÃ¡zek.</p>
+        <h3>Vrácení do 30 dnů</h3>
+        <p>Nesedí velikost? Jednoduché vrácení bez zbytečných otázek.</p>
       </div>
       <div class="promise-item reveal" style="transition-delay:.2s">
         <i data-lucide="lock"></i>
-        <h3>BezpeÄnÃ¡ platba</h3>
-        <p>PlatebnÃ­ brÃ¡na Comgate. Kartou, pÅevodem nebo na dobÃ­rku.</p>
+        <h3>Bezpečná platba</h3>
+        <p>Platební brána Comgate. Kartou, převodem nebo na dobírku.</p>
       </div>
     </div>
   </div>
@@ -371,29 +416,29 @@ h3{font-size:clamp(20px,2.5vw,26px)}
 <section class="section contact-section">
   <div class="container">
     <div class="contact-header reveal">
-      <p class="label">Jsme tu pro VÃ¡s</p>
-      <h2>MÃ¡te otÃ¡zku nebo potÅebujete poradit?</h2>
-      <p>NevÃ¡hejte se ozvat. RÃ¡di pomÅ¯Å¾eme s vÃ½bÄrem sprÃ¡vnÃ© velikosti, porovnÃ¡me produkty nebo zodpovÃ­me cokoliv, co VÃ¡s zajÃ­mÃ¡.</p>
+      <p class="label">Jsme tu pro Vás</p>
+      <h2>Máte otázku nebo potřebujete poradit?</h2>
+      <p>Neváhejte se ozvat. Rádi pomůžeme s výběrem správné velikosti, porovnáme produkty nebo zodpovíme cokoliv, co Vás zajímá.</p>
     </div>
     <div class="contact-cards reveal">
       <div class="contact-card">
         <div class="contact-card-icon"><i data-lucide="phone"></i></div>
-        <h3>Zavolejte nÃ¡m</h3>
-        <p>RÃ¡di s VÃ¡mi probereme vÃ½bÄr vybavenÃ­ osobnÄ. VolÃ¡me rÃ¡di.</p>
+        <h3>Zavolejte nám</h3>
+        <p>Rádi s Vámi probereme výběr vybavení osobně. Voláme rádi.</p>
         <a href="tel:+420600123456" class="contact-link">+420 600 123 456</a>
-        <p class="contact-note">Po aÅ¾ PÃ¡, 9:00 do 17:00</p>
+        <p class="contact-note">Po až Pá, 9:00 do 17:00</p>
       </div>
       <div class="contact-card">
         <div class="contact-card-icon"><i data-lucide="mail"></i></div>
-        <h3>NapiÅ¡te nÃ¡m</h3>
-        <p>Na email odpovÃ­dÃ¡me zpravidla do nÄkolika hodin v pracovnÃ­ dny.</p>
+        <h3>Napište nám</h3>
+        <p>Na email odpovídáme zpravidla do několika hodin v pracovní dny.</p>
         <a href="mailto:info@cavallinomio.cz" class="contact-link">info@cavallinomio.cz</a>
-        <p class="contact-note">OdpovÃ­dÃ¡me do 24 hodin</p>
+        <p class="contact-note">Odpovídáme do 24 hodin</p>
       </div>
       <div class="contact-card">
         <div class="contact-card-icon"><i data-lucide="instagram"></i></div>
-        <h3>Sledujte nÃ¡s</h3>
-        <p>Na Instagramu sdÃ­lÃ­me tipy, novinky a zÃ¡kulisÃ­ z jezdeckÃ©ho svÄta.</p>
+        <h3>Sledujte nás</h3>
+        <p>Na Instagramu sdílíme tipy, novinky a zákulisí z jezdeckého světa.</p>
         <a href="#" class="contact-link">@cavallinomio</a>
         <p class="contact-note">Instagram a Facebook</p>
       </div>
@@ -401,7 +446,7 @@ h3{font-size:clamp(20px,2.5vw,26px)}
     <div style="text-align:center;margin-top:48px" class="reveal">
       <a href="cavallino-mio-homepage.html" class="btn btn-primary">
         <i data-lucide="layout-grid"></i>
-        PÅejÃ­t do obchodu
+        Přejít do obchodu
       </a>
     </div>
   </div>
@@ -413,41 +458,41 @@ h3{font-size:clamp(20px,2.5vw,26px)}
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="logo"><div class="logo-icon"><i data-lucide="heart"></i></div><div class="logo-text"><strong>Cavallino mio</strong><span>JezdeckÃ© potÅeby</span></div></div>
-          <p>JezdeckÃ© potÅeby pro jezdce, konÄ i stÃ¡j. S lÃ¡skou k jezdectvÃ­ od roku 2026.</p>
+          <div class="logo"><div class="logo-icon"><i data-lucide="heart"></i></div><div class="logo-text"><strong>Cavallino mio</strong><span>Jezdecké potřeby</span></div></div>
+          <p>Jezdecké potřeby pro jezdce, koně i stáj. S láskou k jezdectví od roku 2026.</p>
           <div class="footer-social"><a href="#"><i data-lucide="facebook"></i></a><a href="#"><i data-lucide="instagram"></i></a></div>
         </div>
         <div class="footer-col">
           <h5>Kategorie</h5>
           <ul>
-            <li><a href="cavallino-mio-category.html">PotÅeby pro jezdce</a></li>
-            <li><a href="#">PotÅeby pro konÄ</a></li>
-            <li><a href="#">PotÅeby pro stÃ¡j</a></li>
-            <li><a href="#">VÃ½prodej</a></li>
+            <li><a href="cavallino-mio-category.html">Potřeby pro jezdce</a></li>
+            <li><a href="#">Potřeby pro koně</a></li>
+            <li><a href="#">Potřeby pro stáj</a></li>
+            <li><a href="#">Výprodej</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h5>Informace</h5>
           <ul>
-            <li><a href="cavallino-mio-about.html">O nÃ¡s</a></li>
+            <li><a href="cavallino-mio-about.html">O nás</a></li>
             <li><a href="#">Doprava a platba</a></li>
-            <li><a href="#">VrÃ¡cenÃ­ zboÅ¾Ã­</a></li>
-            <li><a href="#">ObchodnÃ­ podmÃ­nky</a></li>
+            <li><a href="#">Vrácení zboží</a></li>
+            <li><a href="#">Obchodní podmínky</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h5>Kontakt</h5>
           <div class="footer-contact-item"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></div>
           <div class="footer-contact-item"><i data-lucide="mail"></i><a href="mailto:info@cavallinomio.cz">info@cavallinomio.cz</a></div>
-          <div class="footer-contact-item"><i data-lucide="clock"></i><span>Po aÅ¾ PÃ¡, 9:00 do 17:00</span></div>
+          <div class="footer-contact-item"><i data-lucide="clock"></i><span>Po až Pá, 9:00 do 17:00</span></div>
         </div>
       </div>
     </div>
   </div>
   <div class="container">
     <div class="footer-bottom">
-      <span>Â© 2026 Cavallino mio. VÅ¡echna prÃ¡va vyhrazena.</span>
-      <div class="footer-bottom-links"><a href="#">ObchodnÃ­ podmÃ­nky</a><a href="#">Cookies</a><a href="#">GDPR</a></div>
+      <span>© 2026 Cavallino mio. Všechna práva vyhrazena.</span>
+      <div class="footer-bottom-links"><a href="#">Obchodní podmínky</a><a href="#">Cookies</a><a href="#">GDPR</a></div>
     </div>
   </div>
 </footer>

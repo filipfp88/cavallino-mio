@@ -225,6 +225,24 @@ h3{font-size:20px}
 .review-stars{display:flex;gap:3px;margin-bottom:8px;color:#F59E0B}
 .review-text{font-size:15px;color:var(--text-mid);line-height:1.65}
 
+/* ─── CROSS-SELL BUNDLE ────────────────────────────────────── */
+.cross-sell{padding:56px 0;background:var(--white);border-top:1px solid var(--border)}
+.cross-sell-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:16px}
+.cross-sell-header h2{font-size:clamp(22px,2.5vw,30px)}
+.bundle-savings{display:inline-flex;align-items:center;gap:6px;background:#FFF5E5;color:#A05A10;font-size:14px;font-weight:700;padding:6px 14px;border-radius:100px;border:1px solid #F0C06A}
+.bundle-savings [data-lucide]{width:15px;height:15px}
+.cross-sell-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.cross-sell-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:block;transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition)}
+.cross-sell-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:transparent}
+.cross-sell-img{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative}
+.cross-sell-img img{width:100%;height:100%;object-fit:cover;display:block}
+.cross-sell-body{padding:14px}
+.cross-sell-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.35}
+.cross-sell-price{font-size:16px;font-weight:700;color:var(--green)}
+.cross-sell-add{font-size:13px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:4px;margin-top:8px}
+.cross-sell-add [data-lucide]{width:13px;height:13px;transition:transform var(--transition)}
+.cross-sell-card:hover .cross-sell-add [data-lucide]{transform:translateX(3px)}
+
 /* ─── RELATED ──────────────────────────────────────────────── */
 .related{padding:64px 0;background:var(--bg)}
 .related .section-header{margin-bottom:36px}
@@ -269,6 +287,29 @@ h3{font-size:20px}
 .back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:90;cursor:pointer;border:none}
 .back-top.visible{opacity:1;transform:translateY(0)}
 .back-top:hover{background:var(--green-dark)}
+
+/* ─── SIZE GUIDE MODAL ─────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal-box{background:var(--white);border-radius:12px;padding:32px;width:min(580px,92vw);max-height:90vh;overflow-y:auto;transform:translateY(12px);transition:transform .2s ease;position:relative}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.modal-header h3{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--text)}
+.modal-close{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:background var(--transition),color var(--transition);cursor:pointer;background:var(--bg);border:none}
+.modal-close:hover{background:var(--border);color:var(--text)}
+.modal-note{font-size:14px;color:var(--text-muted);background:var(--bg);border-radius:var(--radius);padding:10px 14px;margin-bottom:20px;line-height:1.6}
+.size-table{width:100%;border-collapse:collapse;font-size:15px}
+.size-table th{background:var(--green);color:var(--white);font-weight:700;padding:10px 14px;text-align:left;font-size:14px}
+.size-table th:first-child{border-radius:6px 0 0 0}
+.size-table th:last-child{border-radius:0 6px 0 0}
+.size-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-mid)}
+.size-table tr:last-child td{border-bottom:none}
+.size-table tr:nth-child(even) td{background:var(--bg)}
+.size-table td:first-child{font-weight:700;color:var(--text)}
+.measure-tip{margin-top:20px;display:flex;gap:14px;align-items:flex-start;background:var(--green-light);border-radius:var(--radius);padding:14px}
+.measure-tip [data-lucide]{width:20px;height:20px;color:var(--green);flex-shrink:0;margin-top:2px}
+.measure-tip p{font-size:14px;color:var(--text-mid);line-height:1.6}
+.measure-tip strong{color:var(--text)}
 </style>
 </head>
 <body>
@@ -345,6 +386,18 @@ h3{font-size:20px}
     </div>
   </div>
 </header>
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <span class="trust-item"><i data-lucide="truck"></i> Doprava zdarma nad 1 500 Kč</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="rotate-ccw"></i> Vrácení do 30 dní</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="shield-check"></i> Certifikované produkty</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="phone"></i> Česká zákaznická podpora</span>
+  </div>
+</div>
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb-bar">
@@ -412,7 +465,7 @@ h3{font-size:20px}
         <div class="variant-group">
           <div class="variant-label">
             Velikost
-            <a class="size-guide-link" href="#">Průvodce velikostmi</a>
+            <a class="size-guide-link" href="#" onclick="openSizeGuide(event)">📏 Průvodce velikostmi</a>
           </div>
           <div class="size-grid">
             <span class="size-swatch" onclick="selectSize(this)">XS<br><small style="font-size:11px;font-weight:400">52–54 cm</small></span>
@@ -511,7 +564,7 @@ h3{font-size:20px}
 
     <!-- Recenze -->
     <div class="tab-panel" id="tab-reviews">
-      <div class="reviews-header">
+      <div class="reviews-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
         <div class="rating-summary">
           <div class="rating-big">4,7</div>
           <div>
@@ -525,6 +578,10 @@ h3{font-size:20px}
             <div class="rating-count">3 recenze</div>
           </div>
         </div>
+        <a href="#" class="btn btn-outline btn-sm">
+          <i data-lucide="pen-line"></i>
+          Napsat recenzi
+        </a>
       </div>
       <div class="reviews-list">
         <div class="review-item">
@@ -573,6 +630,73 @@ h3{font-size:20px}
     </div>
   </div>
 </div>
+
+<!-- CROSS-SELL BUNDLE -->
+<section class="cross-sell">
+  <div class="container">
+    <div class="cross-sell-header">
+      <div>
+        <p class="label">Kompletní výbava</p>
+        <h2>Ostatní jezdci kupují také</h2>
+      </div>
+      <span class="bundle-savings"><i data-lucide="tag"></i> Ušetříte při nákupu sady</span>
+    </div>
+    <div class="cross-sell-grid">
+      <a href="cavallino-mio-product.html" class="cross-sell-card">
+        <div class="cross-sell-img">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-muted);padding:24px">
+            <i data-lucide="shirt" style="width:40px;height:40px;opacity:0.25"></i>
+            <span style="font-size:12px">Jezdecké kalhoty</span>
+          </div>
+        </div>
+        <div class="cross-sell-body">
+          <div class="cross-sell-name">HKM Basic Grip – jezdecké kalhoty</div>
+          <div class="cross-sell-price">1 190 Kč</div>
+          <div class="cross-sell-add">Přidat do košíku <i data-lucide="plus"></i></div>
+        </div>
+      </a>
+      <a href="cavallino-mio-product.html" class="cross-sell-card">
+        <div class="cross-sell-img">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-muted);padding:24px">
+            <i data-lucide="hand" style="width:40px;height:40px;opacity:0.25"></i>
+            <span style="font-size:12px">Rukavice</span>
+          </div>
+        </div>
+        <div class="cross-sell-body">
+          <div class="cross-sell-name">HKM Sports – jezdecké rukavice</div>
+          <div class="cross-sell-price">490 Kč</div>
+          <div class="cross-sell-add">Přidat do košíku <i data-lucide="plus"></i></div>
+        </div>
+      </a>
+      <a href="cavallino-mio-product.html" class="cross-sell-card">
+        <div class="cross-sell-img">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-muted);padding:24px">
+            <i data-lucide="shield" style="width:40px;height:40px;opacity:0.25"></i>
+            <span style="font-size:12px">Bezpečnostní vesta</span>
+          </div>
+        </div>
+        <div class="cross-sell-body">
+          <div class="cross-sell-name">USG Flexi Motion – bezpečnostní vesta</div>
+          <div class="cross-sell-price">3 290 Kč</div>
+          <div class="cross-sell-add">Přidat do košíku <i data-lucide="plus"></i></div>
+        </div>
+      </a>
+      <a href="cavallino-mio-product.html" class="cross-sell-card">
+        <div class="cross-sell-img">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-muted);padding:24px">
+            <i data-lucide="footprints" style="width:40px;height:40px;opacity:0.25"></i>
+            <span style="font-size:12px">Boty</span>
+          </div>
+        </div>
+        <div class="cross-sell-body">
+          <div class="cross-sell-name">Covalliero Basic – jezdecké boty</div>
+          <div class="cross-sell-price">2 190 Kč</div>
+          <div class="cross-sell-add">Přidat do košíku <i data-lucide="plus"></i></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- RELATED PRODUCTS -->
 <section class="related">
@@ -718,6 +842,53 @@ document.querySelectorAll('.thumb-item').forEach(t=>{
     this.classList.add('active');
   });
 });
+
+// Size guide modal
+function openSizeGuide(e){
+  e.preventDefault();
+  document.getElementById('sizeGuideModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeSizeGuide(){
+  document.getElementById('sizeGuideModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSizeGuide();});
 </script>
+
+<!-- SIZE GUIDE MODAL -->
+<div class="modal-overlay" id="sizeGuideModal" onclick="if(event.target===this)closeSizeGuide()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Průvodce velikostmi — přilby</h3>
+      <button class="modal-close" onclick="closeSizeGuide()" aria-label="Zavřít">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <p class="modal-note">Změřte obvod hlavy měkkou páskou těsně nad obočím a nad ušima — nejširší místo hlavy. Pokud jste na hranici velikostí, doporučujeme zvolit větší.</p>
+    <table class="size-table">
+      <thead>
+        <tr>
+          <th>Velikost</th>
+          <th>Obvod hlavy</th>
+          <th>Vhodný věk</th>
+          <th>Poznámka</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>XS</td><td>52–54 cm</td><td>cca 8–11 let</td><td>Dětská hlava</td></tr>
+        <tr><td>S</td><td>54–56 cm</td><td>cca 11–14 let</td><td>Nejprodávanější</td></tr>
+        <tr><td>M</td><td>56–58 cm</td><td>14+ / dospělí</td><td>Průměrná dospělá hlava</td></tr>
+        <tr><td>L</td><td>58–60 cm</td><td>dospělí</td><td>Větší hlava</td></tr>
+        <tr><td>XL</td><td>60–62 cm</td><td>dospělí</td><td>Momentálně vyprodáno</td></tr>
+      </tbody>
+    </table>
+    <div class="measure-tip">
+      <i data-lucide="ruler"></i>
+      <p><strong>Jak správně měřit:</strong> Přiložte měkkou krejčovskou pásku těsně nad obočí, veďte ji horizontálně kolem celé hlavy těsně nad ušima. Přilba by měla sedět pevně, ale pohodlně — nesmí tlačit ani být volná.</p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

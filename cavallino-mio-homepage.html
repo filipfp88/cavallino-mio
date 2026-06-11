@@ -501,6 +501,63 @@ h4 { font-size: 20px; }
 /* Výprodej accent */
 .nav-vyprodej { color: #C0392B !important; }
 
+/* ─── TESTIMONIALS ─────────────────────────────────────────── */
+.testimonials { background: var(--white); }
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.testimonial-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px 28px 24px; position: relative;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.testimonial-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.testimonial-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+.testimonial-stars [data-lucide] {
+  width: 16px; height: 16px; color: #E8A020; fill: #E8A020; flex-shrink: 0;
+}
+.testimonial-text {
+  font-size: 15px; color: var(--text-mid); line-height: 1.75;
+  margin-bottom: 20px; font-style: italic;
+}
+.testimonial-text::before { content: '"'; font-size: 28px; color: var(--green-light); line-height: 0; vertical-align: -10px; margin-right: 2px; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.testimonial-avatar {
+  width: 42px; height: 42px; background: var(--green-light);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: 'Lora', serif; font-size: 16px; font-weight: 700; color: var(--green);
+  flex-shrink: 0;
+}
+.testimonial-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.testimonial-role { font-size: 13px; color: var(--text-muted); }
+
+/* ─── GIFT VOUCHER BANNER ──────────────────────────────────── */
+.gift-banner {
+  background: linear-gradient(120deg, #5C3A1E 0%, #8B5E35 40%, #A67C4E 100%);
+  padding: 60px 0; overflow: hidden; position: relative;
+}
+.gift-banner::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 50% 120% at 85% 50%, rgba(255,255,255,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.gift-banner-inner {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 48px; align-items: center;
+}
+.gift-banner-icon {
+  width: 96px; height: 96px; background: rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.gift-banner-icon [data-lucide] { width: 44px; height: 44px; color: #F5EDE0; stroke-width: 1.4; }
+.gift-banner-text { color: var(--white); }
+.gift-banner-text .label { color: rgba(255,255,255,0.55); margin-bottom: 8px; font-size: 13px; }
+.gift-banner-text h2 { color: var(--white); font-size: clamp(24px, 3vw, 36px); margin-bottom: 10px; }
+.gift-banner-text p { color: rgba(255,255,255,0.8); font-size: 16px; line-height: 1.65; max-width: 480px; }
+.gift-banner-cta { flex-shrink: 0; }
+.btn-gold {
+  background: #C9A97A; color: #2D1A00; border-color: #C9A97A;
+}
+.btn-gold:hover { background: #E0C090; border-color: #E0C090; }
+
 .hero-img {
   width: 100%; max-width: 480px; aspect-ratio: 4/3;
   border-radius: 12px; object-fit: cover;
@@ -616,6 +673,18 @@ h4 { font-size: 20px; }
     </div>
   </div>
 </header>
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <span class="trust-item"><i data-lucide="truck"></i> Doprava zdarma nad 1 500 Kč</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="rotate-ccw"></i> Vrácení do 30 dní</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="shield-check"></i> Certifikované produkty</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="phone"></i> Česká zákaznická podpora</span>
+  </div>
+</div>
 
 <!-- ── HERO ────────────────────────────────────────────────── -->
 <div class="hero-outer">
@@ -623,17 +692,17 @@ h4 { font-size: 20px; }
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
-        <p class="label">Obchod pro jezdce od jezdců</p>
-        <h1>Vše pro Vás<br>a <em>Vašeho koně</em></h1>
-        <p>Pečlivě vybrané jezdecké potřeby pro bezpečnou jízdu i každodenní péči o koně. Nic zbytečného, jen to, na čem skutečně záleží.</p>
+        <p class="label">Vybavení pro každou jízdu</p>
+        <h1>Pocit svobody<br>začíná <em>správnou výbavou</em></h1>
+        <p>Přilby, boty, sedla i péče o koně — vše pečlivě vybrané pro jezdce, kteří to myslí vážně. Poradíme s výběrem i velikostí, ať jedete poprvé nebo závodíte.</p>
         <div class="hero-ctas">
-          <a href="#" class="btn btn-white">
+          <a href="cavallino-mio-category.html" class="btn btn-white">
             <i data-lucide="layout-grid"></i>
             Prohlédnout produkty
           </a>
-          <a href="cavallino-mio-about.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.45);color:white;">
-            Zjistit více o nás
-            <i data-lucide="arrow-right"></i>
+          <a href="#" class="btn btn-outline" style="border-color:rgba(255,255,255,0.45);color:white;">
+            <i data-lucide="gift"></i>
+            Koupit dárkovou poukázku
           </a>
         </div>
       </div>
@@ -848,6 +917,80 @@ h4 { font-size: 20px; }
         Náš příběh
         <i data-lucide="arrow-right"></i>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ───────────────────────────────────────────── -->
+<section class="section testimonials">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="label">Co říkají jezdci</p>
+      <h2>Hodnocení zákazníků</h2>
+      <p>Přes 450 spokojených zákazníků — přečtěte si, proč si vybírají Cavallino mio.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">
+          <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
+        </div>
+        <p class="testimonial-text">Koupila jsem přilbu pro dceru a nemůžeme být spokojenější. Skvěle padne, ventilace funguje skvěle. Poradili mi s výběrem velikosti a zásilka dorazila do dvou dnů!</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">L</div>
+          <div>
+            <div class="testimonial-name">Lenka M.</div>
+            <div class="testimonial-role">Maminka začínající jezdkyně, Praha</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="transition-delay:.1s">
+        <div class="testimonial-stars">
+          <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
+        </div>
+        <p class="testimonial-text">Jezdecké kalhoty QHP Melody jsou přesně to, co jsem hledala. Pohodlné i na celodení soustředění, fullgrip drží perfektně. Určitě budu nakupovat znovu.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div class="testimonial-name">Markéta S.</div>
+            <div class="testimonial-role">Aktivní závodnice, Brno</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="transition-delay:.2s">
+        <div class="testimonial-stars">
+          <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
+        </div>
+        <p class="testimonial-text">Koupil jsem dárkovou poukázku pro manželku. Obsluha mi pomohla vybrat hodnotu a celý proces byl jednoduchý. Manželka si vybrala přesně to, co chtěla. Výborný nápad!</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">P</div>
+          <div>
+            <div class="testimonial-name">Petr K.</div>
+            <div class="testimonial-role">Manžel závodnice, Ostrava</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GIFT VOUCHER BANNER ────────────────────────────────────── -->
+<section class="gift-banner">
+  <div class="container">
+    <div class="gift-banner-inner reveal">
+      <div class="gift-banner-icon">
+        <i data-lucide="gift"></i>
+      </div>
+      <div class="gift-banner-text">
+        <p class="label">Ideální dárek</p>
+        <h2>Darujte radost z jezdectví</h2>
+        <p>Nevíte, co vybrat? Dárková poukázka Cavallino mio potěší každého jezdce — ať začínajícího nebo zkušeného. Zvolte libovolnou hodnotu, my se o zbytek postaráme.</p>
+      </div>
+      <div class="gift-banner-cta">
+        <a href="#" class="btn btn-gold">
+          <i data-lucide="gift"></i>
+          Koupit poukázku
+        </a>
+      </div>
     </div>
   </div>
 </section>

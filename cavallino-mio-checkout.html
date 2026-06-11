@@ -196,6 +196,13 @@ h2{font-size:clamp(18px,2vw,22px)}
 .back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:90;cursor:pointer;border:none}
 .back-top.visible{opacity:1;transform:translateY(0)}
 .back-top:hover{background:var(--green-dark)}
+
+/* ─── TRUST BAR ─────────────────────────────────────────────── */
+.trust-bar{background:var(--green-light);border-bottom:1px solid rgba(43,84,54,.15);padding:9px 0}
+.trust-bar .container{display:flex;justify-content:center;align-items:center;gap:32px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--green)}
+.trust-item [data-lucide]{width:15px;height:15px;color:var(--green);flex-shrink:0}
+.trust-sep{color:rgba(43,84,54,.25);font-size:16px;line-height:1}
 </style>
 </head>
 <body>
@@ -232,6 +239,18 @@ h2{font-size:clamp(18px,2vw,22px)}
     </div>
   </div>
 </header>
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <span class="trust-item"><i data-lucide="truck"></i> Doprava zdarma nad 1 500 Kč</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="rotate-ccw"></i> Vrácení do 30 dní</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="shield-check"></i> Certifikované produkty</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="phone"></i> Česká zákaznická podpora</span>
+  </div>
+</div>
 
 <div class="breadcrumb-bar">
   <div class="container">

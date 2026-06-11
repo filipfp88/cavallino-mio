@@ -190,6 +190,13 @@ h2{font-size:clamp(24px,3vw,34px)}
 .back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:90;cursor:pointer;border:none}
 .back-top.visible{opacity:1;transform:translateY(0)}
 .back-top:hover{background:var(--green-dark)}
+
+/* ─── TRUST BAR ─────────────────────────────────────────────── */
+.trust-bar{background:var(--green-light);border-bottom:1px solid rgba(43,84,54,.15);padding:9px 0}
+.trust-bar .container{display:flex;justify-content:center;align-items:center;gap:32px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--green)}
+.trust-item [data-lucide]{width:15px;height:15px;color:var(--green);flex-shrink:0}
+.trust-sep{color:rgba(43,84,54,.25);font-size:16px;line-height:1}
 </style>
 </head>
 <body>
@@ -198,14 +205,14 @@ h2{font-size:clamp(24px,3vw,34px)}
   <div class="container">
     <div class="topbar-left">
       <span class="topbar-icon"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></span>
-      <span style="opacity:.35">|</span><span>Po aÅ¾ PÃ¡, 9:00 do 17:00</span>
+      <span style="opacity:.35">|</span><span>Po až Pá, 9:00 do 17:00</span>
     </div>
     <div class="topbar-right">
-      <a href="cavallino-mio-about.html">O nÃ¡s</a>
+      <a href="cavallino-mio-about.html">O nás</a>
       <a href="cavallino-mio-contact.html" style="font-weight:700;opacity:1">Kontakty</a>
       <a href="#">Doprava a platba</a>
       <span style="opacity:.35">|</span>
-      <a href="#" style="font-weight:700">PÅihlÃ¡sit se</a>
+      <a href="#" style="font-weight:700">Přihlásit se</a>
     </div>
   </div>
 </div>
@@ -215,25 +222,25 @@ h2{font-size:clamp(24px,3vw,34px)}
     <div class="header-inner">
       <a href="cavallino-mio-homepage.html" class="logo">
         <div class="logo-icon"><i data-lucide="heart"></i></div>
-        <div class="logo-text"><strong>Cavallino mio</strong><span>JezdeckÃ© potÅeby</span></div>
+        <div class="logo-text"><strong>Cavallino mio</strong><span>Jezdecké potřeby</span></div>
       </a>
       <nav class="nav-primary">
         <ul>
           <li>
-            <a href="cavallino-mio-category.html">PotÅeby pro jezdce <i data-lucide="chevron-down"></i></a>
+            <a href="cavallino-mio-category.html">Potřeby pro jezdce <i data-lucide="chevron-down"></i></a>
             <ul class="nav-dropdown">
-              <li><a href="cavallino-mio-category.html">PÅilby a helmy</a></li>
-              <li><a href="cavallino-mio-category.html">JezdeckÃ© kalhoty</a></li>
-              <li><a href="cavallino-mio-category.html">Boty a ÄiÅ¾my</a></li>
-              <li><a href="cavallino-mio-category.html">BezpeÄnostnÃ­ vesty</a></li>
+              <li><a href="cavallino-mio-category.html">Přilby a helmy</a></li>
+              <li><a href="cavallino-mio-category.html">Jezdecké kalhoty</a></li>
+              <li><a href="cavallino-mio-category.html">Boty a čižmy</a></li>
+              <li><a href="cavallino-mio-category.html">Bezpečnostní vesty</a></li>
             </ul>
           </li>
-          <li><a href="#">PotÅeby pro konÄ <i data-lucide="chevron-down"></i></a></li>
-          <li><a href="#">PotÅeby pro stÃ¡j <i data-lucide="chevron-down"></i></a></li>
-          <li><a href="#" class="nav-vyprodej">VÃ½prodej</a></li>
+          <li><a href="#">Potřeby pro koně <i data-lucide="chevron-down"></i></a></li>
+          <li><a href="#">Potřeby pro stáj <i data-lucide="chevron-down"></i></a></li>
+          <li><a href="#" class="nav-vyprodej">Výprodej</a></li>
         </ul>
       </nav>
-      <div class="search-bar"><i data-lucide="search"></i><input type="text" placeholder="Hledat produktyâ¦"></div>
+      <div class="search-bar"><i data-lucide="search"></i><input type="text" placeholder="Hledat produkty…"></div>
       <div class="header-actions">
         <a href="#" class="header-action"><i data-lucide="user"></i></a>
         <a href="cavallino-mio-cart.html" class="header-action" style="position:relative">
@@ -243,11 +250,23 @@ h2{font-size:clamp(24px,3vw,34px)}
     </div>
   </div>
 </header>
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <span class="trust-item"><i data-lucide="truck"></i> Doprava zdarma nad 1 500 Kč</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="rotate-ccw"></i> Vrácení do 30 dní</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="shield-check"></i> Certifikované produkty</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="phone"></i> Česká zákaznická podpora</span>
+  </div>
+</div>
 
 <div class="breadcrumb-bar">
   <div class="container">
     <nav class="breadcrumb">
-      <a href="cavallino-mio-homepage.html">DomÅ¯</a>
+      <a href="cavallino-mio-homepage.html">Domů</a>
       <i data-lucide="chevron-right"></i>
       <span class="breadcrumb-current">Kontakty</span>
     </nav>
@@ -256,9 +275,9 @@ h2{font-size:clamp(24px,3vw,34px)}
 
 <div class="page-header">
   <div class="container">
-    <p class="label">Jsme tu pro VÃ¡s</p>
-    <h1>Kontaktujte nÃ¡s</h1>
-    <p>MÃ¡te dotaz k produktu, potÅebujete poradit s vÃ½bÄrem nebo reklamovat zboÅ¾Ã­? OzvÄte se, rÃ¡di pomÅ¯Å¾eme.</p>
+    <p class="label">Jsme tu pro Vás</p>
+    <h1>Kontaktujte nás</h1>
+    <p>Máte dotaz k produktu, potřebujete poradit s výběrem nebo reklamovat zboží? Ozvěte se, rádi pomůžeme.</p>
   </div>
 </div>
 
@@ -269,25 +288,25 @@ h2{font-size:clamp(24px,3vw,34px)}
       <!-- Info -->
       <div class="contact-info-block">
         <div class="info-card">
-          <h3>KontaktnÃ­ Ãºdaje</h3>
+          <h3>Kontaktní údaje</h3>
           <div class="info-item">
             <i data-lucide="phone" class="info-icon"></i>
             <div>
               <a href="tel:+420600123456">+420 600 123 456</a>
-              <div style="font-size:14px;color:var(--text-muted);margin-top:2px">Po aÅ¾ PÃ¡, 9:00 do 17:00</div>
+              <div style="font-size:14px;color:var(--text-muted);margin-top:2px">Po až Pá, 9:00 do 17:00</div>
             </div>
           </div>
           <div class="info-item">
             <i data-lucide="mail" class="info-icon"></i>
             <div>
               <a href="mailto:info@cavallinomio.cz">info@cavallinomio.cz</a>
-              <div style="font-size:14px;color:var(--text-muted);margin-top:2px">OdpovÃ­dÃ¡me do 24 hodin</div>
+              <div style="font-size:14px;color:var(--text-muted);margin-top:2px">Odpovídáme do 24 hodin</div>
             </div>
           </div>
           <div class="info-item">
             <i data-lucide="map-pin" class="info-icon"></i>
             <div>
-              UkÃ¡zkovÃ¡ ulice 12<br>
+              Ukázková ulice 12<br>
               110 00 Praha 1
             </div>
           </div>
@@ -301,41 +320,41 @@ h2{font-size:clamp(24px,3vw,34px)}
         </div>
 
         <div class="info-card">
-          <h3>ProvoznÃ­ hodiny</h3>
+          <h3>Provozní hodiny</h3>
           <table class="hours-table">
-            <tr><td>PondÄlÃ­</td><td class="hours-open">9:00 do 17:00</td></tr>
-            <tr><td>ÃterÃ½</td><td class="hours-open">9:00 do 17:00</td></tr>
-            <tr><td>StÅeda</td><td class="hours-open">9:00 do 17:00</td></tr>
-            <tr><td>Ätvrtek</td><td class="hours-open">9:00 do 17:00</td></tr>
-            <tr><td>PÃ¡tek</td><td class="hours-open">9:00 do 16:00</td></tr>
-            <tr><td>Sobota</td><td style="color:var(--text-muted)">ZavÅeno</td></tr>
-            <tr><td>NedÄle</td><td style="color:var(--text-muted)">ZavÅeno</td></tr>
+            <tr><td>Pondělí</td><td class="hours-open">9:00 do 17:00</td></tr>
+            <tr><td>Úterý</td><td class="hours-open">9:00 do 17:00</td></tr>
+            <tr><td>Středa</td><td class="hours-open">9:00 do 17:00</td></tr>
+            <tr><td>Čtvrtek</td><td class="hours-open">9:00 do 17:00</td></tr>
+            <tr><td>Pátek</td><td class="hours-open">9:00 do 16:00</td></tr>
+            <tr><td>Sobota</td><td style="color:var(--text-muted)">Zavřeno</td></tr>
+            <tr><td>Neděle</td><td style="color:var(--text-muted)">Zavřeno</td></tr>
           </table>
         </div>
 
         <div class="map-placeholder">
           <i data-lucide="map"></i>
           <div>
-            <strong style="color:var(--green)">Mapa bude doplnÄna</strong><br>
-            Google Maps embed â UkÃ¡zkovÃ¡ ulice 12, Praha 1
+            <strong style="color:var(--green)">Mapa bude doplněna</strong><br>
+            Google Maps embed — Ukázková ulice 12, Praha 1
           </div>
         </div>
       </div>
 
       <!-- Form -->
       <div class="contact-form-card">
-        <h2>NapiÅ¡te nÃ¡m</h2>
-        <p class="subtitle">VyplÅte formulÃ¡Å a ozveme se VÃ¡m co nejdÅÃ­ve. PovinnÃ¡ pole jsou oznaÄena hvÄzdiÄkou.</p>
+        <h2>Napište nám</h2>
+        <p class="subtitle">Vyplňte formulář a ozveme se Vám co nejdříve. Povinná pole jsou označena hvězdičkou.</p>
 
         <form id="contactForm" onsubmit="submitForm(event)">
           <div class="form-row">
             <div class="form-group" style="margin-bottom:0">
-              <label>JmÃ©no <span class="req">*</span></label>
-              <input type="text" class="form-input" placeholder="VaÅ¡e jmÃ©no" required>
+              <label>Jméno <span class="req">*</span></label>
+              <input type="text" class="form-input" placeholder="Vaše jméno" required>
             </div>
             <div class="form-group" style="margin-bottom:0">
-              <label>PÅÃ­jmenÃ­ <span class="req">*</span></label>
-              <input type="text" class="form-input" placeholder="VaÅ¡e pÅÃ­jmenÃ­" required>
+              <label>Příjmení <span class="req">*</span></label>
+              <input type="text" class="form-input" placeholder="Vaše příjmení" required>
             </div>
           </div>
           <div style="height:16px"></div>
@@ -353,39 +372,39 @@ h2{font-size:clamp(24px,3vw,34px)}
           <div style="height:16px"></div>
 
           <div class="form-group">
-            <label>TÃ½kÃ¡ se <span class="req">*</span></label>
+            <label>Týká se <span class="req">*</span></label>
             <select class="form-select" required>
-              <option value="" disabled selected>Vyberte tÃ©ma dotazu</option>
+              <option value="" disabled selected>Vyberte téma dotazu</option>
               <option>Dotaz k produktu</option>
-              <option>Pomoc s vÃ½bÄrem velikosti</option>
-              <option>ObjednÃ¡vka a doprava</option>
+              <option>Pomoc s výběrem velikosti</option>
+              <option>Objednávka a doprava</option>
               <option>Reklamace</option>
-              <option>VrÃ¡cenÃ­ zboÅ¾Ã­</option>
-              <option>JinÃ©</option>
+              <option>Vrácení zboží</option>
+              <option>Jiné</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>ÄÃ­slo objednÃ¡vky</label>
-            <input type="text" class="form-input" placeholder="NapÅ. #1234 (nepovinnÃ©)">
+            <label>Číslo objednávky</label>
+            <input type="text" class="form-input" placeholder="Např. #1234 (nepovinné)">
           </div>
 
           <div class="form-group">
-            <label>ZprÃ¡va <span class="req">*</span></label>
-            <textarea class="form-textarea" placeholder="NapiÅ¡te nÃ¡m, s ÄÃ­m VÃ¡m mÅ¯Å¾eme pomociâ¦" required></textarea>
+            <label>Zpráva <span class="req">*</span></label>
+            <textarea class="form-textarea" placeholder="Napište nám, s čím Vám můžeme pomoci…" required></textarea>
           </div>
 
           <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">
             <i data-lucide="send"></i>
-            Odeslat zprÃ¡vu
+            Odeslat zprávu
           </button>
 
           <div class="form-success" id="formSuccess">
             <i data-lucide="check-circle"></i>
-            ZprÃ¡va odeslÃ¡na! Ozveme se VÃ¡m co nejdÅÃ­ve.
+            Zpráva odeslána! Ozveme se Vám co nejdříve.
           </div>
 
-          <p class="form-note">OdeslÃ¡nÃ­m formulÃ¡Åe souhlasÃ­te se zpracovÃ¡nÃ­m osobnÃ­ch ÃºdajÅ¯ za ÃºÄelem vyÅÃ­zenÃ­ VaÅ¡eho dotazu. <a href="#">VÃ­ce informacÃ­ o zpracovÃ¡nÃ­ dat.</a></p>
+          <p class="form-note">Odesláním formuláře souhlasíte se zpracováním osobních údajů za účelem vyřízení Vašeho dotazu. <a href="#">Více informací o zpracování dat.</a></p>
         </form>
       </div>
 
@@ -398,21 +417,21 @@ h2{font-size:clamp(24px,3vw,34px)}
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="logo"><div class="logo-icon"><i data-lucide="heart"></i></div><div class="logo-text"><strong>Cavallino mio</strong><span>JezdeckÃ© potÅeby</span></div></div>
-          <p>JezdeckÃ© potÅeby pro jezdce, konÄ i stÃ¡j.</p>
+          <div class="logo"><div class="logo-icon"><i data-lucide="heart"></i></div><div class="logo-text"><strong>Cavallino mio</strong><span>Jezdecké potřeby</span></div></div>
+          <p>Jezdecké potřeby pro jezdce, koně i stáj.</p>
           <div class="footer-social"><a href="#"><i data-lucide="facebook"></i></a><a href="#"><i data-lucide="instagram"></i></a></div>
         </div>
-        <div class="footer-col"><h5>Kategorie</h5><ul><li><a href="cavallino-mio-category.html">PotÅeby pro jezdce</a></li><li><a href="#">PotÅeby pro konÄ</a></li><li><a href="#">PotÅeby pro stÃ¡j</a></li><li><a href="#">VÃ½prodej</a></li></ul></div>
-        <div class="footer-col"><h5>Informace</h5><ul><li><a href="cavallino-mio-about.html">O nÃ¡s</a></li><li><a href="#">Doprava a platba</a></li><li><a href="#">VrÃ¡cenÃ­ zboÅ¾Ã­</a></li><li><a href="#">ObchodnÃ­ podmÃ­nky</a></li></ul></div>
+        <div class="footer-col"><h5>Kategorie</h5><ul><li><a href="cavallino-mio-category.html">Potřeby pro jezdce</a></li><li><a href="#">Potřeby pro koně</a></li><li><a href="#">Potřeby pro stáj</a></li><li><a href="#">Výprodej</a></li></ul></div>
+        <div class="footer-col"><h5>Informace</h5><ul><li><a href="cavallino-mio-about.html">O nás</a></li><li><a href="#">Doprava a platba</a></li><li><a href="#">Vrácení zboží</a></li><li><a href="#">Obchodní podmínky</a></li></ul></div>
         <div class="footer-col"><h5>Kontakt</h5>
           <div class="footer-contact-item"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></div>
           <div class="footer-contact-item"><i data-lucide="mail"></i><a href="mailto:info@cavallinomio.cz">info@cavallinomio.cz</a></div>
-          <div class="footer-contact-item"><i data-lucide="clock"></i><span>Po aÅ¾ PÃ¡, 9:00 do 17:00</span></div>
+          <div class="footer-contact-item"><i data-lucide="clock"></i><span>Po až Pá, 9:00 do 17:00</span></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="container"><div class="footer-bottom"><span>Â© 2026 Cavallino mio. VÅ¡echna prÃ¡va vyhrazena.</span><div class="footer-bottom-links"><a href="#">ObchodnÃ­ podmÃ­nky</a><a href="#">Cookies</a><a href="#">GDPR</a></div></div></div>
+  <div class="container"><div class="footer-bottom"><span>© 2026 Cavallino mio. Všechna práva vyhrazena.</span><div class="footer-bottom-links"><a href="#">Obchodní podmínky</a><a href="#">Cookies</a><a href="#">GDPR</a></div></div></div>
 </footer>
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up"></i></button>
 

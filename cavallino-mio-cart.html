@@ -184,6 +184,21 @@ h2{font-size:clamp(22px,2.5vw,28px)}
 .secure-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;color:var(--text-muted);margin-top:12px}
 .secure-note [data-lucide]{width:14px;height:14px;color:var(--green)}
 
+/* Gift wrap box */
+.gift-wrap-box{padding:16px 24px;border-top:1px solid var(--border);background:var(--bg)}
+.gift-wrap-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;font-weight:700;color:var(--text);user-select:none}
+.gift-wrap-toggle input[type=checkbox]{display:none}
+.gift-wrap-check{width:20px;height:20px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--transition);background:var(--white)}
+.gift-wrap-toggle input:checked + .gift-wrap-check{background:var(--green);border-color:var(--green)}
+.gift-wrap-toggle input:checked + .gift-wrap-check::after{content:'';display:block;width:10px;height:6px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg);margin-top:-2px}
+.gift-wrap-icon [data-lucide]{width:18px;height:18px;color:var(--brown)}
+.gift-wrap-price{margin-left:auto;font-size:14px;color:var(--text-muted);font-weight:400}
+.gift-wrap-msg{margin-top:12px;display:none}
+.gift-wrap-msg.open{display:block}
+.gift-wrap-msg textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--radius);padding:10px 12px;font-family:'Lato',sans-serif;font-size:14px;color:var(--text);resize:vertical;min-height:80px;outline:none;transition:border-color var(--transition);background:var(--white)}
+.gift-wrap-msg textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(43,84,54,.1)}
+.gift-wrap-msg label{font-size:13px;color:var(--text-muted);display:block;margin-bottom:6px}
+
 /* Continue shopping */
 .continue-shopping{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:700;color:var(--green);margin-top:20px;transition:var(--transition)}
 .continue-shopping:hover{text-decoration:underline}
@@ -213,6 +228,13 @@ h2{font-size:clamp(22px,2.5vw,28px)}
 .back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:90;cursor:pointer;border:none}
 .back-top.visible{opacity:1;transform:translateY(0)}
 .back-top:hover{background:var(--green-dark)}
+
+/* ─── TRUST BAR ─────────────────────────────────────────────── */
+.trust-bar{background:var(--green-light);border-bottom:1px solid rgba(43,84,54,.15);padding:9px 0}
+.trust-bar .container{display:flex;justify-content:center;align-items:center;gap:32px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--green)}
+.trust-item [data-lucide]{width:15px;height:15px;color:var(--green);flex-shrink:0}
+.trust-sep{color:rgba(43,84,54,.25);font-size:16px;line-height:1}
 </style>
 </head>
 <body>
@@ -259,6 +281,18 @@ h2{font-size:clamp(22px,2.5vw,28px)}
     </div>
   </div>
 </header>
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <span class="trust-item"><i data-lucide="truck"></i> Doprava zdarma nad 1 500 Kč</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="rotate-ccw"></i> Vrácení do 30 dní</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="shield-check"></i> Certifikované produkty</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-item"><i data-lucide="phone"></i> Česká zákaznická podpora</span>
+  </div>
+</div>
 
 <div class="breadcrumb-bar">
   <div class="container">
@@ -411,6 +445,21 @@ h2{font-size:clamp(22px,2.5vw,28px)}
           </tr>
         </table>
         <p style="font-size:13px;color:var(--text-muted);padding:0 24px 14px;text-align:right">Včetně 21 % DPH (690 Kč)</p>
+        <!-- Dárkové balení -->
+        <div class="gift-wrap-box">
+          <label class="gift-wrap-toggle">
+            <input type="checkbox" id="giftWrapChk" onchange="toggleGiftMsg()">
+            <span class="gift-wrap-check"></span>
+            <span class="gift-wrap-icon"><i data-lucide="gift"></i></span>
+            Přidat dárkové balení
+            <span class="gift-wrap-price">+ 89 Kč</span>
+          </label>
+          <div class="gift-wrap-msg" id="giftMsg">
+            <label for="giftMsgText">Věnování na přání (nepovinné):</label>
+            <textarea id="giftMsgText" placeholder="Např. Hodně zdaru při jezdectví! S láskou, Maminka…" maxlength="200"></textarea>
+          </div>
+        </div>
+
         <div class="wc-proceed-to-checkout">
           <a href="cavallino-mio-checkout.html" class="checkout-button">
             <i data-lucide="lock"></i>
@@ -456,6 +505,10 @@ function removeItem(btn){
   const row = btn.closest('tr');
   row.style.opacity='0'; row.style.transition='opacity .3s';
   setTimeout(()=>row.remove(), 300);
+}
+function toggleGiftMsg(){
+  const open = document.getElementById('giftWrapChk').checked;
+  document.getElementById('giftMsg').classList.toggle('open', open);
 }
 </script>
 </body>
