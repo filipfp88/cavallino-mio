@@ -1,1 +1,462 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Košík | Cavallino mio</title>
+<link rel="stylesheet" href="fonts.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ── POZNÁMKA: Tato stránka odpovídá výstupu WooCommerce [woocommerce_cart] shortcodu
+   stylovaného přes Elementor Pro Woo Builder. Třídní jména odpovídají WooCommerce HTML
+   (woocommerce-cart-form, shop_table, cart_totals atd.) — CSS lze přímo použít v projektu. */
 
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Lato',Arial,sans-serif;font-size:16px;line-height:1.6;color:#1A1A1A;background:#F8F6F2}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input{font-family:inherit}
+:root{
+  --green:#2B5436;--green-dark:#1D3B25;--green-light:#E8F1EB;
+  --brown:#A67C4E;--bg:#F8F6F2;--white:#FFFFFF;--border:#E2DAD0;
+  --text:#1A1A1A;--text-mid:#4A4A4A;--text-muted:#767676;
+  --radius:6px;--shadow:0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:0 6px 28px rgba(0,0,0,0.11);--transition:0.2s ease;--max:1260px;
+}
+[data-lucide]{display:inline-block;vertical-align:middle;stroke-width:1.8}
+.topbar [data-lucide]{width:14px;height:14px}
+.header-action [data-lucide]{width:20px;height:20px}
+.nav-primary [data-lucide]{width:14px;height:14px}
+.btn [data-lucide]{width:17px;height:17px}
+.logo-icon [data-lucide]{width:22px;height:22px;color:white;stroke-width:1.5}
+.breadcrumb [data-lucide]{width:14px;height:14px;color:var(--text-muted)}
+.footer-contact-item [data-lucide]{width:15px;height:15px;flex-shrink:0;margin-top:3px}
+.footer-social [data-lucide]{width:16px;height:16px}
+.back-top [data-lucide]{width:18px;height:18px}
+
+h1,h2,h3,h4{font-family:'Lora',Georgia,serif;font-weight:600;line-height:1.2}
+h1{font-size:clamp(28px,3.5vw,38px)}
+h2{font-size:clamp(22px,2.5vw,28px)}
+.label{font-size:14px;font-weight:700;color:var(--brown)}
+
+.container{max-width:var(--max);margin:0 auto;padding:0 32px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;font-family:'Lato',sans-serif;padding:13px 28px;border-radius:var(--radius);transition:var(--transition);cursor:pointer;border:2px solid transparent;white-space:nowrap}
+.btn-primary{background:var(--green);color:var(--white);border-color:var(--green)}
+.btn-primary:hover{background:var(--green-dark);border-color:var(--green-dark)}
+.btn-outline{background:transparent;color:var(--green);border-color:var(--green)}
+.btn-outline:hover{background:var(--green);color:var(--white)}
+.btn-sm{font-size:14px;padding:8px 18px}
+.btn-ghost{background:transparent;color:var(--text-mid);border-color:var(--border)}
+.btn-ghost:hover{background:var(--white);color:var(--green);border-color:var(--green)}
+
+/* TOP BAR */
+.topbar{background:var(--green-dark);color:var(--white);font-size:14px;height:36px;display:flex;align-items:center}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;width:100%}
+.topbar-left,.topbar-right{display:flex;align-items:center;gap:20px}
+.topbar a{color:var(--white);opacity:.85;transition:opacity var(--transition)}
+.topbar a:hover{opacity:1}
+.topbar-icon{display:flex;align-items:center;gap:6px}
+
+/* HEADER */
+.header{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.header-inner{display:flex;align-items:center;gap:32px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-icon{width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.logo-text strong{display:block;font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--green)}
+.logo-text span{display:block;font-size:11px;color:var(--text-muted)}
+.nav-primary{flex:1}
+.nav-primary ul{display:flex;align-items:center;gap:4px}
+.nav-primary>ul>li{position:relative}
+.nav-primary>ul>li>a{display:flex;align-items:center;gap:4px;font-size:15px;font-weight:700;color:var(--text);padding:8px 14px;border-radius:var(--radius);transition:var(--transition);white-space:nowrap}
+.nav-primary>ul>li>a:hover{background:var(--green-light);color:var(--green)}
+.nav-dropdown{position:absolute;top:calc(100% + 8px);left:0;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);min-width:220px;padding:8px 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .18s ease;z-index:200}
+.nav-primary>ul>li:hover .nav-dropdown{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown li a{display:block;padding:9px 20px;font-size:15px;color:var(--text-mid);transition:var(--transition)}
+.nav-dropdown li a:hover{background:var(--green-light);color:var(--green);padding-left:26px}
+.header-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.header-action{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius);color:var(--text);transition:var(--transition)}
+.header-action:hover{background:var(--green-light);color:var(--green)}
+.header-action.active{background:var(--green-light);color:var(--green)}
+.cart-badge{position:absolute;top:4px;right:4px;background:var(--brown);color:var(--white);font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
+.search-bar{display:flex;align-items:center;background:var(--bg);border:1.5px solid var(--border);border-radius:100px;padding:0 16px;gap:8px;height:42px;width:260px}
+.search-bar [data-lucide]{width:16px;height:16px;color:var(--text-muted);flex-shrink:0}
+.search-bar input{border:none;background:transparent;outline:none;font-size:15px;color:var(--text);width:100%}
+.search-bar input::placeholder{color:var(--text-muted)}
+.nav-vyprodej{color:#C0392B!important}
+
+/* BREADCRUMB */
+.breadcrumb-bar{background:var(--white);border-bottom:1px solid var(--border);padding:12px 0}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-muted)}
+.breadcrumb a{color:var(--text-muted);transition:var(--transition)}
+.breadcrumb a:hover{color:var(--green)}
+.breadcrumb-current{color:var(--text);font-weight:700}
+
+/* PAGE HEADER */
+.page-header{background:var(--white);padding:36px 0 28px;border-bottom:1px solid var(--border)}
+.page-header h1{display:flex;align-items:center;gap:14px}
+.cart-count-badge{font-family:'Lato',sans-serif;font-size:16px;font-weight:700;background:var(--green-light);color:var(--green);padding:4px 12px;border-radius:100px}
+
+/* ── WOOCOMMERCE CART LAYOUT ────────────────────────────────
+   Odpovídá výstupu [woocommerce_cart] shortcodu.
+   S Elementor Pro Woo Builder lze upravovat barvy, fonty,
+   mezery, ale ne strukturu HTML generovanou WooCommerce.  */
+.woocommerce{padding:40px 0 72px}
+.woocommerce-layout{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
+
+/* Cart form (left) */
+.woocommerce-cart-form{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+
+/* WooCommerce cart table */
+.shop_table.cart{width:100%;border-collapse:collapse}
+.shop_table thead tr{background:var(--bg);border-bottom:2px solid var(--border)}
+.shop_table thead th{padding:14px 16px;font-size:14px;font-weight:700;color:var(--text-muted);text-align:left}
+.shop_table thead th.product-remove{width:48px}
+.shop_table thead th.product-thumbnail{width:90px}
+.shop_table thead th.product-subtotal{text-align:right}
+.shop_table tbody tr{border-bottom:1px solid var(--border)}
+.shop_table tbody tr:last-child{border-bottom:none}
+
+/* Product row */
+.product-remove{padding:16px;vertical-align:middle}
+.remove-btn{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:var(--transition);cursor:pointer}
+.remove-btn:hover{background:#FEE2E2;border-color:#FCA5A5;color:#C0392B}
+.remove-btn [data-lucide]{width:14px;height:14px}
+
+.product-thumbnail{padding:16px 12px;vertical-align:middle}
+.product-thumbnail img{width:72px;height:72px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border)}
+
+.product-name{padding:16px 12px;vertical-align:middle}
+.product-name a{font-size:16px;font-weight:700;color:var(--text);transition:var(--transition)}
+.product-name a:hover{color:var(--green);text-decoration:underline}
+.variation{font-size:14px;color:var(--text-muted);margin-top:4px}
+.variation dt,.variation dd{display:inline;margin:0}
+.variation dt::after{content:': '}
+.variation dd::after{content:' · '}
+.variation dd:last-child::after{content:''}
+
+.product-price{padding:16px 12px;vertical-align:middle;font-size:16px;color:var(--text-mid)}
+
+.product-quantity{padding:16px 12px;vertical-align:middle}
+.qty-wrap{display:inline-flex;align-items:center;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--white)}
+.qty-btn{width:36px;height:40px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text-mid);cursor:pointer;background:var(--bg);transition:background var(--transition)}
+.qty-btn:hover{background:var(--green-light);color:var(--green)}
+.qty-input{width:48px;height:40px;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);text-align:center;font-size:16px;font-weight:700;color:var(--text);outline:none}
+
+.product-subtotal{padding:16px 12px;vertical-align:middle;text-align:right;font-size:16px;font-weight:700;color:var(--green)}
+
+/* Cart actions (coupon + update) */
+.cart-actions{padding:16px 16px;background:var(--bg);border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.coupon{display:flex;align-items:center;gap:8px;flex:1}
+.coupon-input{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:15px;color:var(--text);background:var(--white);outline:none;width:200px;transition:border-color var(--transition)}
+.coupon-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(43,84,54,.1)}
+.coupon-input::placeholder{color:var(--text-muted)}
+
+/* Totals (right) */
+.cart_totals{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;position:sticky;top:calc(72px + 20px)}
+.cart_totals h2{padding:20px 24px;border-bottom:1px solid var(--border);font-size:20px}
+.cart_totals .shop_table{width:100%;border-collapse:collapse}
+.cart_totals .shop_table tr{border-bottom:1px solid var(--border)}
+.cart_totals .shop_table tr:last-child{border-bottom:none}
+.cart_totals .shop_table th{padding:14px 24px;font-size:15px;font-weight:700;color:var(--text);text-align:left;vertical-align:top;width:50%}
+.cart_totals .shop_table td{padding:14px 24px;font-size:15px;color:var(--text-mid);text-align:right}
+
+/* Shipping */
+.shipping-methods{text-align:left!important}
+.shipping-option{display:flex;align-items:center;gap:8px;font-size:15px;margin-bottom:8px;cursor:pointer}
+.shipping-option:last-child{margin-bottom:0}
+.shipping-option input[type=radio]{accent-color:var(--green);width:16px;height:16px;cursor:pointer}
+.shipping-price{color:var(--text-mid);margin-left:auto}
+.shipping-free{color:var(--green);font-weight:700}
+
+/* Order total */
+.order-total th,.order-total td{padding:18px 24px!important;background:var(--green-light)}
+.order-total th{font-size:17px!important;color:var(--green)!important}
+.order-total td{font-size:22px!important;font-weight:700!important;color:var(--green)!important}
+
+/* Proceed to checkout */
+.wc-proceed-to-checkout{padding:20px 24px;border-top:1px solid var(--border)}
+.checkout-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;background:var(--green);color:var(--white);border-radius:var(--radius);font-size:17px;font-weight:700;font-family:'Lato',sans-serif;transition:var(--transition);border:2px solid var(--green)}
+.checkout-button:hover{background:var(--green-dark);border-color:var(--green-dark)}
+.checkout-button [data-lucide]{width:18px;height:18px}
+
+.secure-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;color:var(--text-muted);margin-top:12px}
+.secure-note [data-lucide]{width:14px;height:14px;color:var(--green)}
+
+/* Continue shopping */
+.continue-shopping{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:700;color:var(--green);margin-top:20px;transition:var(--transition)}
+.continue-shopping:hover{text-decoration:underline}
+.continue-shopping [data-lucide]{width:15px;height:15px}
+
+/* FOOTER */
+.footer{background:#111C14;color:rgba(255,255,255,.82)}
+.footer-top{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px}
+.footer-brand .logo-text strong{color:#9AC9A8}
+.footer-brand .logo-text span{color:rgba(255,255,255,.35)}
+.footer-brand .logo-icon{background:rgba(255,255,255,.08)}
+.footer-brand p{font-size:15px;color:rgba(255,255,255,.65);margin-top:16px;line-height:1.75;max-width:240px}
+.footer-social{display:flex;gap:10px;margin-top:20px}
+.footer-social a{width:38px;height:38px;background:rgba(255,255,255,.08);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);transition:var(--transition)}
+.footer-social a:hover{background:var(--green);color:var(--white)}
+.footer-col h5{font-size:14px;font-weight:700;color:rgba(255,255,255,.38);margin-bottom:16px}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:15px;color:rgba(255,255,255,.68);transition:var(--transition)}
+.footer-col ul li a:hover{color:var(--white);padding-left:4px}
+.footer-contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;font-size:15px;color:rgba(255,255,255,.68)}
+.footer-contact-item [data-lucide]{color:var(--brown)}
+.footer-bottom{padding:20px 0;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:rgba(255,255,255,.38)}
+.footer-bottom a{color:rgba(255,255,255,.45);transition:var(--transition)}
+.footer-bottom a:hover{color:var(--white)}
+.footer-bottom-links{display:flex;gap:20px}
+.back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:90;cursor:pointer;border:none}
+.back-top.visible{opacity:1;transform:translateY(0)}
+.back-top:hover{background:var(--green-dark)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <span class="topbar-icon"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></span>
+      <span style="opacity:.35">|</span><span>Po až Pá, 9:00 do 17:00</span>
+    </div>
+    <div class="topbar-right">
+      <a href="cavallino-mio-about.html">O nás</a>
+      <a href="cavallino-mio-contact.html">Kontakty</a>
+      <a href="#">Doprava a platba</a>
+      <span style="opacity:.35">|</span>
+      <a href="#" style="font-weight:700">Přihlásit se</a>
+    </div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="cavallino-mio-homepage.html" class="logo">
+        <div class="logo-icon"><i data-lucide="heart"></i></div>
+        <div class="logo-text"><strong>Cavallino mio</strong><span>Jezdecké potřeby</span></div>
+      </a>
+      <nav class="nav-primary">
+        <ul>
+          <li><a href="cavallino-mio-category.html">Potřeby pro jezdce <i data-lucide="chevron-down"></i></a>
+            <ul class="nav-dropdown"><li><a href="cavallino-mio-category.html">Přilby a helmy</a></li><li><a href="cavallino-mio-category.html">Jezdecké kalhoty</a></li><li><a href="cavallino-mio-category.html">Boty a čižmy</a></li></ul></li>
+          <li><a href="#">Potřeby pro koně <i data-lucide="chevron-down"></i></a></li>
+          <li><a href="#">Potřeby pro stáj <i data-lucide="chevron-down"></i></a></li>
+          <li><a href="#" class="nav-vyprodej">Výprodej</a></li>
+        </ul>
+      </nav>
+      <div class="search-bar"><i data-lucide="search"></i><input type="text" placeholder="Hledat produkty…"></div>
+      <div class="header-actions">
+        <a href="#" class="header-action"><i data-lucide="user"></i></a>
+        <a href="cavallino-mio-cart.html" class="header-action active" style="position:relative">
+          <i data-lucide="shopping-bag"></i><span class="cart-badge">2</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="cavallino-mio-homepage.html">Domů</a>
+      <i data-lucide="chevron-right"></i>
+      <span class="breadcrumb-current">Košík</span>
+    </nav>
+  </div>
+</div>
+
+<div class="page-header">
+  <div class="container">
+    <h1>Košík <span class="cart-count-badge">2 položky</span></h1>
+  </div>
+</div>
+
+<!-- WooCommerce Cart Output -->
+<div class="woocommerce">
+  <div class="container">
+    <div class="woocommerce-layout">
+
+      <!-- Cart form (left) — [woocommerce_cart] generates this HTML -->
+      <div>
+        <form class="woocommerce-cart-form">
+          <table class="shop_table cart">
+            <thead>
+              <tr>
+                <th class="product-remove"></th>
+                <th class="product-thumbnail"></th>
+                <th class="product-name">Produkt</th>
+                <th class="product-price">Cena za kus</th>
+                <th class="product-quantity">Množství</th>
+                <th class="product-subtotal">Mezisoučet</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Row 1 -->
+              <tr>
+                <td class="product-remove">
+                  <button class="remove-btn" aria-label="Odebrat produkt" onclick="removeItem(this)">
+                    <i data-lucide="x"></i>
+                  </button>
+                </td>
+                <td class="product-thumbnail">
+                  <a href="cavallino-mio-product.html">
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAH0AfQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD22iiikZhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFIAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKADNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0UlFABRSUUCFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKACikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAKKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACikopALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUAFFJmjNAhaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNFABRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQA8IxXdxjOOSBSAEnAHvTt6+SFwCdxPOeOBUwmUMcP1zt6/KMHj+X5UxlalCkgkdhk1LJIGRgHzk5A54Hp/L8qcsqBeW+XCjZj0Iz/WgCAAk4A96SrHnDePnHRhkZ7jihpU4w2cBx0PccUAQFSpwfQGlVHYZVGI6cCpUYGcEN/yz6+mFp4lTEe6T5lPJweff+lAFdY2boM8gde5ptWFlQMpLdGjPT0HNKrhhtZt4GSWx+Q/n+dAFaigsWYk9TzSZpCFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0UAFFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFACUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUAFFFFAgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAM0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRSUUAFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKADNGaSikAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaKSigAzRmkooELmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmikooAM0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRSUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB/9k=" alt="Jezdecká přilba Kentaur Safety Star">
+                  </a>
+                </td>
+                <td class="product-name">
+                  <a href="cavallino-mio-product.html">Jezdecká přilba Kentaur Safety Star</a>
+                  <dl class="variation">
+                    <dt>Barva</dt><dd>Černá</dd>
+                    <dt>Velikost</dt><dd>S (54–56 cm)</dd>
+                  </dl>
+                </td>
+                <td class="product-price">2 990 Kč</td>
+                <td class="product-quantity">
+                  <div class="qty-wrap">
+                    <button type="button" class="qty-btn" onclick="changeQty(this,-1)">−</button>
+                    <input class="qty-input" type="number" value="1" min="1" max="99">
+                    <button type="button" class="qty-btn" onclick="changeQty(this,1)">+</button>
+                  </div>
+                </td>
+                <td class="product-subtotal">2 990 Kč</td>
+              </tr>
+              <!-- Row 2 -->
+              <tr>
+                <td class="product-remove">
+                  <button class="remove-btn" aria-label="Odebrat produkt" onclick="removeItem(this)">
+                    <i data-lucide="x"></i>
+                  </button>
+                </td>
+                <td class="product-thumbnail">
+                  <a href="cavallino-mio-product.html">
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAH0AfQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD22iiikZhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFIAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKADNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0UlFABRSUUCFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKACikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAKKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACikopALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUAFFJmjNAhaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNFABRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtKql2wOv1puafEwV8nptI/Q0DEIKnBx+BzQQQcEe9SxyqAOijdllGfmHp/n1p/nKdpL9MbhzyMDj+f50wK4UkEjsMmkqWKRVZy/zAj8+RTjIvkuu/cT9euf8ACgCJkZPvDHJH4ikALEADJPAqwZ1Egw3ymUs30OP/AK9IkyqUJbgbfl9D3P8AP86A0K9FTSN+6BJyzcE+oHf+X5VBmkAtFJmjNAhaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNFABRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFABRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKADNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0UlFABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmigBKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAzRmkopALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmikooAM0ZpKKBC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5opKKADNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0UlFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/9k=" alt="Jezdecké kalhoty HKM Basic Grip">
+                  </a>
+                </td>
+                <td class="product-name">
+                  <a href="cavallino-mio-product.html">Jezdecké kalhoty HKM Basic Grip</a>
+                  <dl class="variation">
+                    <dt>Velikost</dt><dd>M</dd>
+                    <dt>Barva</dt><dd>Černá</dd>
+                  </dl>
+                </td>
+                <td class="product-price">890 Kč</td>
+                <td class="product-quantity">
+                  <div class="qty-wrap">
+                    <button type="button" class="qty-btn" onclick="changeQty(this,-1)">−</button>
+                    <input class="qty-input" type="number" value="1" min="1" max="99">
+                    <button type="button" class="qty-btn" onclick="changeQty(this,1)">+</button>
+                  </div>
+                </td>
+                <td class="product-subtotal">890 Kč</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Cart actions -->
+          <div class="cart-actions">
+            <div class="coupon">
+              <input type="text" class="coupon-input" placeholder="Máte slevový kód?">
+              <button type="button" class="btn btn-ghost btn-sm">Použít kód</button>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm">
+              <i data-lucide="refresh-cw"></i>
+              Aktualizovat košík
+            </button>
+          </div>
+        </form>
+
+        <a href="cavallino-mio-category.html" class="continue-shopping">
+          <i data-lucide="arrow-left"></i>
+          Pokračovat v nákupu
+        </a>
+      </div>
+
+      <!-- Cart totals (right) — WooCommerce .cart_totals div -->
+      <aside class="cart_totals">
+        <h2>Celková cena</h2>
+        <table class="shop_table">
+          <tr>
+            <th>Mezisoučet</th>
+            <td>3 880 Kč</td>
+          </tr>
+          <tr>
+            <th>Doprava</th>
+            <td class="shipping-methods">
+              <label class="shipping-option">
+                <input type="radio" name="shipping" checked>
+                PPL – doručení na adresu
+                <span class="shipping-price">89 Kč</span>
+              </label>
+              <label class="shipping-option">
+                <input type="radio" name="shipping">
+                Zásilkovna – výdejní místo
+                <span class="shipping-price">59 Kč</span>
+              </label>
+              <label class="shipping-option">
+                <input type="radio" name="shipping">
+                Zásilkovna – Z-Box
+                <span class="shipping-price">49 Kč</span>
+              </label>
+              <p style="font-size:13px;color:var(--text-muted);margin-top:8px">Doprava zdarma od 1 500 Kč</p>
+            </td>
+          </tr>
+          <tr class="order-total">
+            <th>Celkem</th>
+            <td>3 969 Kč</td>
+          </tr>
+        </table>
+        <p style="font-size:13px;color:var(--text-muted);padding:0 24px 14px;text-align:right">Včetně 21 % DPH (690 Kč)</p>
+        <div class="wc-proceed-to-checkout">
+          <a href="cavallino-mio-checkout.html" class="checkout-button">
+            <i data-lucide="lock"></i>
+            Přejít k pokladně
+          </a>
+          <div class="secure-note">
+            <i data-lucide="shield-check"></i>
+            Bezpečná platba přes Comgate
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="logo"><div class="logo-icon"><i data-lucide="heart"></i></div><div class="logo-text"><strong>Cavallino mio</strong><span>Jezdecké potřeby</span></div></div><p>S láskou k jezdectví od roku 2026.</p><div class="footer-social"><a href="#"><i data-lucide="facebook"></i></a><a href="#"><i data-lucide="instagram"></i></a></div></div>
+        <div class="footer-col"><h5>Kategorie</h5><ul><li><a href="cavallino-mio-category.html">Potřeby pro jezdce</a></li><li><a href="#">Potřeby pro koně</a></li><li><a href="#">Výprodej</a></li></ul></div>
+        <div class="footer-col"><h5>Informace</h5><ul><li><a href="cavallino-mio-about.html">O nás</a></li><li><a href="#">Doprava a platba</a></li><li><a href="#">Vrácení zboží</a></li><li><a href="#">Obchodní podmínky</a></li></ul></div>
+        <div class="footer-col"><h5>Kontakt</h5>
+          <div class="footer-contact-item"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></div>
+          <div class="footer-contact-item"><i data-lucide="mail"></i><a href="mailto:info@cavallinomio.cz">info@cavallinomio.cz</a></div>
+          <div class="footer-contact-item"><i data-lucide="clock"></i><span>Po až Pá, 9:00 do 17:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container"><div class="footer-bottom"><span>© 2026 Cavallino mio.</span><div class="footer-bottom-links"><a href="#">Obchodní podmínky</a><a href="#">Cookies</a><a href="#">GDPR</a></div></div></div>
+</footer>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up"></i></button>
+<script>
+lucide.createIcons();
+window.addEventListener('scroll',()=>document.getElementById('backTop').classList.toggle('visible',scrollY>300));
+function changeQty(btn, dir){
+  const input = btn.parentElement.querySelector('.qty-input');
+  input.value = Math.max(1, +input.value + dir);
+}
+function removeItem(btn){
+  const row = btn.closest('tr');
+  row.style.opacity='0'; row.style.transition='opacity .3s';
+  setTimeout(()=>row.remove(), 300);
+}
+</script>
+</body>
+</html>

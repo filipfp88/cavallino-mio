@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokladna | Cavallino mio</title>
+<link rel="stylesheet" href="fonts.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ── POZNÁMKA: Tato stránka odpovídá výstupu WooCommerce [woocommerce_checkout] shortcodu
+   stylovaného přes Elementor Pro Woo Builder (Checkout widget).
+   Třídní jména odpovídají WooCommerce HTML — CSS lze přímo použít v projektu.
+   Elementor Pro umožňuje přeuspořádat sekce (billing, shipping, notes, order review, payment)
+   a nastavit 1 nebo 2 sloupcový layout. Formulářová pole generuje WooCommerce PHP. */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Lato',Arial,sans-serif;font-size:16px;line-height:1.6;color:#1A1A1A;background:#F8F6F2}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,select,textarea{font-family:inherit}
+:root{
+  --green:#2B5436;--green-dark:#1D3B25;--green-light:#E8F1EB;
+  --brown:#A67C4E;--bg:#F8F6F2;--white:#FFFFFF;--border:#E2DAD0;
+  --text:#1A1A1A;--text-mid:#4A4A4A;--text-muted:#767676;
+  --radius:6px;--shadow:0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:0 6px 28px rgba(0,0,0,0.11);--transition:0.2s ease;--max:1260px;
+}
+[data-lucide]{display:inline-block;vertical-align:middle;stroke-width:1.8}
+.topbar [data-lucide]{width:14px;height:14px}
+.header-action [data-lucide]{width:20px;height:20px}
+.btn [data-lucide]{width:17px;height:17px}
+.logo-icon [data-lucide]{width:22px;height:22px;color:white;stroke-width:1.5}
+.breadcrumb [data-lucide]{width:14px;height:14px;color:var(--text-muted)}
+.footer-contact-item [data-lucide]{width:15px;height:15px;flex-shrink:0;margin-top:3px}
+.footer-social [data-lucide]{width:16px;height:16px}
+.back-top [data-lucide]{width:18px;height:18px}
+.payment-icon [data-lucide]{width:18px;height:18px}
+
+h1,h2,h3,h4{font-family:'Lora',Georgia,serif;font-weight:600;line-height:1.2}
+h1{font-size:clamp(26px,3vw,34px)}
+h2{font-size:clamp(18px,2vw,22px)}
+.label{font-size:14px;font-weight:700;color:var(--brown)}
+
+.container{max-width:var(--max);margin:0 auto;padding:0 32px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;font-family:'Lato',sans-serif;padding:13px 28px;border-radius:var(--radius);transition:var(--transition);cursor:pointer;border:2px solid transparent;white-space:nowrap}
+.btn-primary{background:var(--green);color:var(--white);border-color:var(--green)}
+.btn-primary:hover{background:var(--green-dark);border-color:var(--green-dark)}
+
+/* TOP BAR */
+.topbar{background:var(--green-dark);color:var(--white);font-size:14px;height:36px;display:flex;align-items:center}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;width:100%}
+.topbar-left,.topbar-right{display:flex;align-items:center;gap:20px}
+.topbar a{color:var(--white);opacity:.85;transition:opacity var(--transition)}
+.topbar a:hover{opacity:1}
+.topbar-icon{display:flex;align-items:center;gap:6px}
+
+/* SIMPLIFIED HEADER (checkout — no nav distractions) */
+.header{background:var(--white);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:32px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:40px;height:40px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.logo-text strong{display:block;font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--green)}
+.logo-text span{display:block;font-size:11px;color:var(--text-muted)}
+.header-secure{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--text-muted)}
+.header-secure [data-lucide]{width:16px;height:16px;color:var(--green)}
+.cart-badge{position:absolute;top:4px;right:4px;background:var(--brown);color:var(--white);font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* BREADCRUMB */
+.breadcrumb-bar{background:var(--white);border-bottom:1px solid var(--border);padding:12px 0}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-muted)}
+.breadcrumb a{color:var(--text-muted);transition:var(--transition)}
+.breadcrumb a:hover{color:var(--green)}
+.breadcrumb-current{color:var(--text);font-weight:700}
+
+/* CHECKOUT STEPS INDICATOR */
+.checkout-steps{background:var(--white);border-bottom:1px solid var(--border);padding:16px 0}
+.steps-inner{display:flex;align-items:center;gap:0}
+.step{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--text-muted)}
+.step.active{color:var(--green)}
+.step.done{color:var(--text-muted)}
+.step-num{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.step.active .step-num{background:var(--green);border-color:var(--green);color:var(--white)}
+.step.done .step-num{background:var(--green-light);border-color:var(--green);color:var(--green)}
+.step-sep{width:48px;height:1px;background:var(--border);margin:0 8px;flex-shrink:0}
+
+/* ── WOOCOMMERCE CHECKOUT LAYOUT ─────────────────────────────
+   Elementor Pro Woo Builder nastavení:
+   Layout: 2 sloupce (billing + order review)
+   Přetažením lze měnit pořadí sekcí.
+   Formulářová pole generuje WooCommerce, lze jen stylovat. */
+.woocommerce{padding:40px 0 72px}
+.checkout-layout{display:grid;grid-template-columns:1fr 400px;gap:32px;align-items:start}
+
+/* ── FORM SECTIONS ────────────────────────────────────────── */
+.checkout-section{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.checkout-section:last-child{margin-bottom:0}
+.checkout-section-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.checkout-section-header h2{font-size:19px;font-family:'Lora',serif}
+.section-edit{font-size:14px;font-weight:700;color:var(--green);cursor:pointer}
+.section-edit:hover{text-decoration:underline}
+.checkout-section-body{padding:24px}
+
+/* Form fields — WooCommerce generates these with specific classes */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-row.full{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:15px;font-weight:700;color:var(--text)}
+.form-group .required{color:#C0392B;margin-left:2px}
+.form-input,.form-select{padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:16px;color:var(--text);background:var(--bg);outline:none;transition:border-color var(--transition),box-shadow var(--transition);width:100%}
+.form-input:focus,.form-select:focus{border-color:var(--green);background:var(--white);box-shadow:0 0 0 3px rgba(43,84,54,.1)}
+.form-input::placeholder{color:var(--text-muted)}
+.form-select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23767676' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+.form-textarea{padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:16px;color:var(--text);background:var(--bg);outline:none;width:100%;min-height:90px;resize:vertical;line-height:1.6}
+.form-textarea:focus{border-color:var(--green);background:var(--white);box-shadow:0 0 0 3px rgba(43,84,54,.1)}
+.form-textarea::placeholder{color:var(--text-muted)}
+
+/* Create account toggle */
+.create-account-toggle{display:flex;align-items:center;gap:10px;padding:14px 0;cursor:pointer;font-size:15px;color:var(--text-mid)}
+.create-account-toggle input{accent-color:var(--green);width:17px;height:17px;cursor:pointer}
+
+/* ── ORDER REVIEW (right column) ─────────────────────────── */
+.order-review{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;position:sticky;top:calc(72px + 20px)}
+.order-review h2{padding:18px 22px;border-bottom:1px solid var(--border);font-size:19px}
+
+/* Order items table */
+.woocommerce-checkout-review-order-table{width:100%;border-collapse:collapse}
+.checkout-item-row{border-bottom:1px solid var(--border)}
+.checkout-item-cell{padding:14px 22px;display:flex;align-items:center;gap:12px}
+.checkout-item-img{width:52px;height:52px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border);flex-shrink:0}
+.checkout-item-info{flex:1}
+.checkout-item-name{font-size:15px;font-weight:700;color:var(--text)}
+.checkout-item-meta{font-size:13px;color:var(--text-muted);margin-top:2px}
+.checkout-item-price{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap}
+.checkout-item-qty{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--white);border-radius:50%;font-size:11px;font-weight:700;flex-shrink:0}
+
+.checkout-totals{padding:0 22px}
+.checkout-totals-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:15px}
+.checkout-totals-row:last-child{border-bottom:none}
+.checkout-totals-row .label-text{color:var(--text-mid)}
+.checkout-totals-row .value{font-weight:700;color:var(--text)}
+.checkout-totals-row.total-row{padding:16px 0}
+.checkout-totals-row.total-row .label-text{font-size:17px;font-weight:700;font-family:'Lora',serif;color:var(--text)}
+.checkout-totals-row.total-row .value{font-size:22px;color:var(--green)}
+.vat-note{font-size:13px;color:var(--text-muted);font-weight:400;margin-left:4px}
+
+/* ── PAYMENT SECTION ─────────────────────────────────────── */
+#payment{padding:20px 22px;border-top:1px solid var(--border)}
+#payment h3{font-family:'Lato',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px}
+.payment-methods{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.payment-method{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color var(--transition)}
+.payment-method.selected{border-color:var(--green);background:var(--green-light)}
+.payment-method-header{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer}
+.payment-method-header input[type=radio]{accent-color:var(--green);width:17px;height:17px;cursor:pointer;flex-shrink:0}
+.payment-method-label{font-size:15px;font-weight:700;color:var(--text);flex:1}
+.payment-method-icons{display:flex;gap:6px}
+.payment-chip{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700;color:var(--text-mid)}
+.payment-method-body{padding:0 16px 14px;font-size:14px;color:var(--text-muted);line-height:1.55;display:none}
+.payment-method.selected .payment-method-body{display:block}
+
+/* Terms */
+.terms-wrap{font-size:14px;color:var(--text-mid);line-height:1.55;margin-bottom:18px;display:flex;align-items:flex-start;gap:10px}
+.terms-wrap input{accent-color:var(--green);width:16px;height:16px;cursor:pointer;flex-shrink:0;margin-top:2px}
+.terms-wrap a{color:var(--green);text-decoration:underline}
+
+/* Place order button */
+#place_order{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px;background:var(--green);color:var(--white);border:none;border-radius:var(--radius);font-size:18px;font-weight:700;font-family:'Lato',sans-serif;cursor:pointer;transition:background var(--transition)}
+#place_order:hover{background:var(--green-dark)}
+#place_order [data-lucide]{width:20px;height:20px}
+
+.order-secure{display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;color:var(--text-muted);margin-top:12px}
+.order-secure [data-lucide]{width:14px;height:14px;color:var(--green)}
+
+/* FOOTER */
+.footer{background:#111C14;color:rgba(255,255,255,.82)}
+.footer-top{padding:60px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px}
+.footer-brand .logo-text strong{color:#9AC9A8}
+.footer-brand .logo-text span{color:rgba(255,255,255,.35)}
+.footer-brand .logo-icon{background:rgba(255,255,255,.08)}
+.footer-brand p{font-size:15px;color:rgba(255,255,255,.65);margin-top:16px;line-height:1.75;max-width:240px}
+.footer-social{display:flex;gap:10px;margin-top:20px}
+.footer-social a{width:38px;height:38px;background:rgba(255,255,255,.08);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);transition:var(--transition)}
+.footer-social a:hover{background:var(--green);color:var(--white)}
+.footer-col h5{font-size:14px;font-weight:700;color:rgba(255,255,255,.38);margin-bottom:16px}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:15px;color:rgba(255,255,255,.68);transition:var(--transition)}
+.footer-col ul li a:hover{color:var(--white);padding-left:4px}
+.footer-contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;font-size:15px;color:rgba(255,255,255,.68)}
+.footer-contact-item [data-lucide]{color:var(--brown)}
+.footer-bottom{padding:20px 0;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:rgba(255,255,255,.38)}
+.footer-bottom a{color:rgba(255,255,255,.45);transition:var(--transition)}
+.footer-bottom a:hover{color:var(--white)}
+.footer-bottom-links{display:flex;gap:20px}
+.back-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:90;cursor:pointer;border:none}
+.back-top.visible{opacity:1;transform:translateY(0)}
+.back-top:hover{background:var(--green-dark)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <span class="topbar-icon"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></span>
+    </div>
+    <div class="topbar-right">
+      <a href="cavallino-mio-about.html">O nás</a>
+      <a href="cavallino-mio-contact.html">Kontakty</a>
+      <a href="#">Doprava a platba</a>
+    </div>
+  </div>
+</div>
+
+<!-- Simplified header for checkout (best practice — méně rozptylujících prvků) -->
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="cavallino-mio-homepage.html" class="logo">
+        <div class="logo-icon"><i data-lucide="heart"></i></div>
+        <div class="logo-text"><strong>Cavallino mio</strong><span>Jezdecké potřeby</span></div>
+      </a>
+      <div class="header-secure">
+        <i data-lucide="lock"></i>
+        Zabezpečená pokladna
+      </div>
+      <a href="cavallino-mio-cart.html" style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--text-mid)">
+        <i data-lucide="shopping-bag" style="width:20px;height:20px"></i>
+        Košík (2)
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="cavallino-mio-homepage.html">Domů</a>
+      <i data-lucide="chevron-right"></i>
+      <a href="cavallino-mio-cart.html">Košík</a>
+      <i data-lucide="chevron-right"></i>
+      <span class="breadcrumb-current">Pokladna</span>
+    </nav>
+  </div>
+</div>
+
+<!-- Checkout steps -->
+<div class="checkout-steps">
+  <div class="container">
+    <div class="steps-inner">
+      <div class="step done">
+        <div class="step-num"><i data-lucide="check" style="width:12px;height:12px"></i></div>
+        Košík
+      </div>
+      <div class="step-sep"></div>
+      <div class="step active">
+        <div class="step-num">2</div>
+        Dodání a platba
+      </div>
+      <div class="step-sep"></div>
+      <div class="step">
+        <div class="step-num">3</div>
+        Potvrzení objednávky
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WooCommerce Checkout Output -->
+<div class="woocommerce">
+  <div class="container">
+    <form class="checkout woocommerce-checkout" method="post" onsubmit="placeOrder(event)">
+      <div class="checkout-layout">
+
+        <!-- LEFT: Customer details -->
+        <div id="customer_details">
+
+          <!-- Billing -->
+          <div class="checkout-section">
+            <div class="checkout-section-header">
+              <h2>Fakturační údaje</h2>
+            </div>
+            <div class="checkout-section-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Jméno <span class="required">*</span></label>
+                  <input type="text" class="form-input" placeholder="Vaše jméno" required>
+                </div>
+                <div class="form-group">
+                  <label>Příjmení <span class="required">*</span></label>
+                  <input type="text" class="form-input" placeholder="Vaše příjmení" required>
+                </div>
+              </div>
+              <div class="form-row full">
+                <div class="form-group">
+                  <label>Firma (nepovinné)</label>
+                  <input type="text" class="form-input" placeholder="Název firmy">
+                </div>
+              </div>
+              <div class="form-row full">
+                <div class="form-group">
+                  <label>Ulice a číslo popisné <span class="required">*</span></label>
+                  <input type="text" class="form-input" placeholder="Ulice a číslo" required>
+                </div>
+              </div>
+              <div class="form-row full">
+                <div class="form-group">
+                  <input type="text" class="form-input" placeholder="Budova, byt, patro (nepovinné)">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Město <span class="required">*</span></label>
+                  <input type="text" class="form-input" placeholder="Město" required>
+                </div>
+                <div class="form-group">
+                  <label>PSČ <span class="required">*</span></label>
+                  <input type="text" class="form-input" placeholder="000 00" required>
+                </div>
+              </div>
+              <div class="form-row full">
+                <div class="form-group">
+                  <label>Stát <span class="required">*</span></label>
+                  <select class="form-select">
+                    <option selected>Česká republika</option>
+                    <option>Slovensko</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Telefon <span class="required">*</span></label>
+                  <input type="tel" class="form-input" placeholder="+420 000 000 000" required>
+                </div>
+                <div class="form-group">
+                  <label>E-mail <span class="required">*</span></label>
+                  <input type="email" class="form-input" placeholder="vas@email.cz" required>
+                </div>
+              </div>
+
+              <label class="create-account-toggle">
+                <input type="checkbox">
+                Vytvořit účet pro příští nákupy
+              </label>
+            </div>
+          </div>
+
+          <!-- Shipping address toggle -->
+          <div class="checkout-section">
+            <div class="checkout-section-body" style="padding:18px 24px">
+              <label class="create-account-toggle" style="padding:0">
+                <input type="checkbox" id="shipToDifferent">
+                Doručit na jinou adresu
+              </label>
+            </div>
+          </div>
+
+          <!-- Order notes -->
+          <div class="checkout-section">
+            <div class="checkout-section-header"><h2>Poznámka k objednávce</h2></div>
+            <div class="checkout-section-body">
+              <div class="form-group">
+                <label>Poznámka (nepovinné)</label>
+                <textarea class="form-textarea" placeholder="Speciální požadavky, pokyny k doručení, poznámky k objednávce…"></textarea>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Order review + payment -->
+        <aside class="order-review">
+          <h2>Vaše objednávka</h2>
+
+          <!-- Items -->
+          <div class="woocommerce-checkout-review-order-table">
+            <div class="checkout-item-row">
+              <div class="checkout-item-cell">
+                <span class="checkout-item-qty">1</span>
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAH0AfQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD22iiikZhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFIAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKADNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0UlFABRSUUCFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKACikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAKKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACikopALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUAFFJmjNAhaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNFABRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQA8IxXdxjOOSBSAEnAHvTt6+SFwCdxPOeOBUwmUMcP1zt6/KMHj+X5UxlalCkgkdhk1LJIGRgHzk5A54Hp/L8qcsqBeW+XCjZj0Iz/WgCAAk4A96SrHnDePnHRhkZ7jihpU4w2cBx0PccUAQFSpwfQGlVHYZVGI6cCpUYGcEN/yz6+mFp4lTEe6T5lPJweff+lAFdY2boM8gde5ptWFlQMpLdGjPT0HNKrhhtZt4GSWx+Q/n+dAFaigsWYk9TzSZpCFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0UAFFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAtFJRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFACUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUAFFFFAgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAM0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRSUUAFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaM0AFFGaKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKADNGaSikAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaKSigAzRmkooELmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmikooAM0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRSUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB/9k=" class="checkout-item-img" alt="Přilba">
+                <div class="checkout-item-info">
+                  <div class="checkout-item-name">Jezdecká přilba Kentaur Safety Star</div>
+                  <div class="checkout-item-meta">Černá · S (54–56 cm)</div>
+                </div>
+                <div class="checkout-item-price">2 990 Kč</div>
+              </div>
+            </div>
+            <div class="checkout-item-row">
+              <div class="checkout-item-cell">
+                <span class="checkout-item-qty">1</span>
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAH0AfQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD22iiikZhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFIAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKADNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0UlFABRSUUCFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKAFopKKACikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAWikooAKKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACikopALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUAFFJmjNAhaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNFABRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtFJmjNAC0UmaM0ALRSZozQAtKql2wOv1puafEwV8nptI/Q0DEIKnBx+BzQQQcEe9SxyqAOijdllGfmHp/n1p/nKdpL9MbhzyMDj+f50wK4UkEjsMmkqWKRVZy/zAj8+RTjIvkuu/cT9euf8ACgCJkZPvDHJH4ikALEADJPAqwZ1Egw3ymUs30OP/AK9IkyqUJbgbfl9D3P8AP86A0K9FTSN+6BJyzcE+oHf+X5VBmkAtFJmjNAhaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNGaAFopM0ZoAWikzRmgBaKTNFABRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUALRSUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFAC0UlFABRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKADNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0UlFABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmjNABRRmigBKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAzRmkopALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmikooAM0ZpKKBC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5ozSUUALmjNJRQAuaM0lFAC5opKKADNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0ZpKKAFzRmkooAXNGaSigBc0UlFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/9k=" class="checkout-item-img" alt="Kalhoty">
+                <div class="checkout-item-info">
+                  <div class="checkout-item-name">Jezdecké kalhoty HKM Basic Grip</div>
+                  <div class="checkout-item-meta">Černá · M</div>
+                </div>
+                <div class="checkout-item-price">890 Kč</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-totals">
+            <div class="checkout-totals-row">
+              <span class="label-text">Mezisoučet</span>
+              <span class="value">3 880 Kč</span>
+            </div>
+            <div class="checkout-totals-row">
+              <span class="label-text">Doprava</span>
+              <span class="value">PPL — 89 Kč</span>
+            </div>
+            <div class="checkout-totals-row total-row">
+              <span class="label-text">Celkem</span>
+              <span class="value">3 969 Kč <span class="vat-note">vč. DPH</span></span>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div id="payment">
+            <h3>Způsob platby</h3>
+            <div class="payment-methods">
+              <div class="payment-method selected" onclick="selectPayment(this)">
+                <div class="payment-method-header">
+                  <input type="radio" name="payment_method" value="comgate_card" checked>
+                  <span class="payment-method-label">Platební karta</span>
+                  <div class="payment-method-icons">
+                    <span class="payment-chip">VISA</span>
+                    <span class="payment-chip">MC</span>
+                  </div>
+                </div>
+                <div class="payment-method-body">
+                  Okamžitá platba kartou přes zabezpečenou bránu Comgate. Podporujeme VISA, Mastercard a Maestro.
+                </div>
+              </div>
+              <div class="payment-method" onclick="selectPayment(this)">
+                <div class="payment-method-header">
+                  <input type="radio" name="payment_method" value="comgate_bank">
+                  <span class="payment-method-label">Bankovní převod</span>
+                  <div class="payment-method-icons">
+                    <span class="payment-chip">QR platba</span>
+                  </div>
+                </div>
+                <div class="payment-method-body">
+                  Okamžitý bankovní převod nebo QR platba přes Comgate. Objednávka bude zpracována ihned po připsání platby.
+                </div>
+              </div>
+              <div class="payment-method" onclick="selectPayment(this)">
+                <div class="payment-method-header">
+                  <input type="radio" name="payment_method" value="cod">
+                  <span class="payment-method-label">Dobírka</span>
+                  <div class="payment-method-icons">
+                    <span class="payment-chip">+49 Kč</span>
+                  </div>
+                </div>
+                <div class="payment-method-body">
+                  Platba hotovostí nebo kartou při převzetí zásilky. Za dobírku se účtuje poplatek 49 Kč.
+                </div>
+              </div>
+            </div>
+
+            <label class="terms-wrap">
+              <input type="checkbox" required>
+              Přečetl/a jsem si a souhlasím s <a href="#">obchodními podmínkami</a> a zpracováním <a href="#">osobních údajů</a>.
+            </label>
+
+            <button type="submit" id="place_order">
+              <i data-lucide="lock"></i>
+              Objednat a zaplatit
+            </button>
+            <div class="order-secure">
+              <i data-lucide="shield-check"></i>
+              Platba je zabezpečena šifrováním SSL
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="logo"><div class="logo-icon"><i data-lucide="heart"></i></div><div class="logo-text"><strong>Cavallino mio</strong><span>Jezdecké potřeby</span></div></div><p>S láskou k jezdectví od roku 2026.</p><div class="footer-social"><a href="#"><i data-lucide="facebook"></i></a><a href="#"><i data-lucide="instagram"></i></a></div></div>
+        <div class="footer-col"><h5>Kategorie</h5><ul><li><a href="cavallino-mio-category.html">Potřeby pro jezdce</a></li><li><a href="#">Potřeby pro koně</a></li><li><a href="#">Výprodej</a></li></ul></div>
+        <div class="footer-col"><h5>Informace</h5><ul><li><a href="cavallino-mio-about.html">O nás</a></li><li><a href="#">Doprava a platba</a></li><li><a href="#">Obchodní podmínky</a></li></ul></div>
+        <div class="footer-col"><h5>Kontakt</h5>
+          <div class="footer-contact-item"><i data-lucide="phone"></i><a href="tel:+420600123456">+420 600 123 456</a></div>
+          <div class="footer-contact-item"><i data-lucide="mail"></i><a href="mailto:info@cavallinomio.cz">info@cavallinomio.cz</a></div>
+          <div class="footer-contact-item"><i data-lucide="clock"></i><span>Po až Pá, 9:00 do 17:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container"><div class="footer-bottom"><span>© 2026 Cavallino mio.</span><div class="footer-bottom-links"><a href="#">Obchodní podmínky</a><a href="#">Cookies</a><a href="#">GDPR</a></div></div></div>
+</footer>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i data-lucide="arrow-up"></i></button>
+
+<script>
+lucide.createIcons();
+window.addEventListener('scroll',()=>document.getElementById('backTop').classList.toggle('visible',scrollY>300));
+
+function selectPayment(el){
+  document.querySelectorAll('.payment-method').forEach(m=>{
+    m.classList.remove('selected');
+    m.querySelector('input[type=radio]').checked=false;
+  });
+  el.classList.add('selected');
+  el.querySelector('input[type=radio]').checked=true;
+}
+
+function placeOrder(e){
+  e.preventDefault();
+  const btn=document.getElementById('place_order');
+  btn.innerHTML='<i data-lucide="loader"></i> Zpracovávám…';
+  btn.disabled=true;
+  lucide.createIcons();
+  setTimeout(()=>{
+    btn.innerHTML='<i data-lucide="check"></i> Objednávka přijata!';
+    btn.style.background='#2A7A3B';
+    lucide.createIcons();
+  }, 1500);
+}
+</script>
+</body>
+</html>
