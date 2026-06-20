@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Přihlásit se / Registrace | Cavallino mio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="fonts.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* RESET & BASE */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px; line-height: 1.6;
+  color: #1A1A1A; background: #F8F6F2;
+}
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+/* DESIGN TOKENS */
+:root {
+  --green:        #2B5436;
+  --green-dark:   #1D3B25;
+  --green-light:  #E8F1EB;
+  --brown:        #A67C4E;
+  --brown-light:  #F5EDE0;
+  --bg:           #F8F6F2;
+  --white:        #FFFFFF;
+  --border:       #E2DAD0;
+  --text:         #1A1A1A;
+  --text-mid:     #4A4A4A;
+  --text-muted:   #767676;
+  --radius:       6px;
+  --shadow:       0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:    0 6px 28px rgba(0,0,0,0.11);
+  --transition:   0.2s ease;
+  --max:          1260px;
+}
+
+/* LUCIDE ICONS */
+[data-lucide] { display: inline-block; vertical-align: middle; stroke-width: 1.8; }
+.topbar       [data-lucide] { width: 14px; height: 14px; }
+.header-action [data-lucide] { width: 20px; height: 20px; }
+.nav-primary  [data-lucide] { width: 14px; height: 14px; }
+.btn          [data-lucide] { width: 17px; height: 17px; }
+.footer-contact-item [data-lucide] { width: 15px; height: 15px; flex-shrink: 0; margin-top: 3px; }
+.footer-social [data-lucide] { width: 16px; height: 16px; }
+.back-top     [data-lucide] { width: 18px; height: 18px; }
+
+/* TYPOGRAPHY */
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600; line-height: 1.2;
+}
+h1 { font-size: clamp(34px, 4.5vw, 54px); }
+h2 { font-size: clamp(26px, 3vw, 36px); }
+h3 { font-size: clamp(20px, 2.5vw, 26px); }
+h4 { font-size: 20px; }
+.label { font-size: 14px; font-weight: 700; color: var(--brown); }
+
+/* LAYOUT */
+.container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+.section    { padding: 72px 0; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 16px; font-weight: 700; font-family: 'Poppins', sans-serif;
+  padding: 13px 28px; border-radius: var(--radius);
+  transition: var(--transition); cursor: pointer; border: 2px solid transparent;
+  white-space: nowrap; width: 100%; justify-content: center;
+}
+.btn-primary { background: var(--green); color: var(--white); border-color: var(--green); }
+.btn-primary:hover { background: var(--green-dark); border-color: var(--green-dark); }
+.btn-outline { background: transparent; color: var(--green); border-color: var(--green); }
+.btn-outline:hover { background: var(--green); color: var(--white); }
+
+/* TOP BAR */
+.topbar {
+  background: var(--green-dark); color: var(--white);
+  font-size: 14px; height: 36px;
+  display: flex; align-items: center;
+}
+.topbar .container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+.topbar-left  { display: flex; align-items: center; gap: 24px; }
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+.topbar a { color: var(--white); opacity: 0.85; transition: opacity var(--transition); }
+.topbar a:hover { opacity: 1; }
+.topbar-icon { display: flex; align-items: center; gap: 6px; }
+
+/* HEADER */
+.header {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow);
+}
+.header-inner { display: flex; align-items: center; gap: 32px; height: 72px; }
+
+/* Logo */
+.logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.logo-icon {
+  width: 40px; height: 40px; background: var(--green); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-icon [data-lucide] { width: 22px; height: 22px; color: white; stroke-width: 1.5; }
+.logo-text { line-height: 1.1; }
+.logo-text strong {
+  display: block; font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 600; color: var(--green); letter-spacing: 0.02em;
+}
+.logo-text span {
+  display: block; font-size: 11px; font-weight: 400; color: var(--text-muted); letter-spacing: 0.04em;
+}
+
+/* Primary nav */
+.nav-primary { flex: 1; }
+.nav-primary ul { display: flex; align-items: center; gap: 4px; }
+.nav-primary > ul > li { position: relative; }
+.nav-primary > ul > li > a {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 15px; font-weight: 700; color: var(--text);
+  padding: 8px 14px; border-radius: var(--radius);
+  transition: var(--transition); white-space: nowrap;
+}
+.nav-primary > ul > li > a:hover,
+.nav-primary > ul > li > a.active { background: var(--green-light); color: var(--green); }
+.nav-dropdown {
+  position: absolute; top: calc(100% + 8px); left: 0;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  min-width: 220px; padding: 8px 0;
+  opacity: 0; visibility: hidden; transform: translateY(-8px);
+  transition: all 0.18s ease; z-index: 200;
+}
+.nav-primary > ul > li:hover .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+.nav-dropdown li a {
+  display: block; padding: 9px 20px;
+  font-size: 15px; color: var(--text-mid); transition: var(--transition);
+}
+.nav-dropdown li a:hover { background: var(--green-light); color: var(--green); padding-left: 26px; }
+
+/* Header actions */
+.header-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.header-action {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: var(--radius);
+  color: var(--text); transition: var(--transition);
+}
+.header-action:hover { background: var(--green-light); color: var(--green); }
+.cart-badge {
+  position: absolute; top: 4px; right: 4px;
+  background: var(--brown); color: var(--white);
+  font-size: 10px; font-weight: 700;
+  width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+}
+.search-bar {
+  display: flex; align-items: center;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 100px; padding: 0 16px; gap: 8px; height: 42px;
+  transition: var(--transition); width: 260px;
+}
+.search-bar [data-lucide] { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+.search-bar:focus-within {
+  border-color: var(--green); background: var(--white);
+  box-shadow: 0 0 0 3px rgba(43,84,54,0.12);
+}
+.search-bar input {
+  border: none; background: transparent; outline: none;
+  font-family: 'Poppins', sans-serif; font-size: 15px; color: var(--text); width: 100%;
+}
+.search-bar input::placeholder { color: var(--text-muted); }
+.nav-vyprodej { color: #C0392B !important; }
+
+/* PAGE HEADER */
+.page-header {
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+  padding: 48px 0;
+  text-align: center;
+  color: var(--white);
+}
+.page-header .label { color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+.page-header h1 {
+  font-size: clamp(28px, 3.5vw, 42px);
+  color: var(--white); margin-bottom: 12px;
+}
+.page-header p {
+  font-size: 16px; color: rgba(255,255,255,0.78); max-width: 500px; margin: 0 auto;
+}
+
+/* BREADCRUMB */
+.breadcrumb {
+  padding: 14px 0; font-size: 14px; color: var(--text-muted);
+}
+.breadcrumb a { color: var(--green); }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb span { margin: 0 6px; }
+
+/* LOGIN PAGE MAIN */
+.login-section { padding: 60px 0 80px; }
+.login-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* FORM BOXES */
+.form-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: var(--shadow);
+}
+.form-box-header {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.form-box-header h2 {
+  font-size: 26px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.form-box-header p {
+  font-size: 15px;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+/* FORM FIELDS */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 7px;
+}
+.form-label .req { color: var(--brown); margin-left: 2px; }
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--bg);
+  transition: var(--transition);
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--green);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(43,84,54,0.12);
+}
+.form-input::placeholder { color: var(--text-muted); }
+.form-input-wrap {
+  position: relative;
+}
+.form-input-wrap .toggle-pw {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); cursor: pointer; display: flex; align-items: center;
+  background: none; border: none; padding: 0;
+  transition: color var(--transition);
+}
+.form-input-wrap .toggle-pw:hover { color: var(--green); }
+.form-input-wrap .toggle-pw [data-lucide] { width: 17px; height: 17px; }
+
+/* CHECKBOX */
+.form-check {
+  display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+}
+.form-check input[type="checkbox"] {
+  width: 18px; height: 18px; margin-top: 2px;
+  accent-color: var(--green); cursor: pointer; flex-shrink: 0;
+}
+.form-check-label {
+  font-size: 14px; color: var(--text-mid); line-height: 1.55; cursor: pointer;
+}
+.form-check-label a { color: var(--green); text-decoration: underline; }
+
+/* PASSWORD STRENGTH */
+.pw-strength {
+  margin-top: 8px;
+  display: flex; gap: 4px; align-items: center;
+}
+.pw-strength-bars { display: flex; gap: 3px; }
+.pw-bar {
+  width: 28px; height: 4px; border-radius: 2px;
+  background: var(--border); transition: background 0.2s;
+}
+.pw-bar.active-weak    { background: #C0392B; }
+.pw-bar.active-medium  { background: #E8A020; }
+.pw-bar.active-strong  { background: var(--green); }
+.pw-strength-label { font-size: 12px; color: var(--text-muted); margin-left: 6px; }
+
+/* DIVIDER */
+.form-divider {
+  display: flex; align-items: center; gap: 14px;
+  margin: 24px 0; color: var(--text-muted); font-size: 13px;
+}
+.form-divider::before, .form-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* SOCIAL LOGIN */
+.social-login { display: flex; flex-direction: column; gap: 10px; }
+.btn-social {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 12px 20px; border-radius: var(--radius);
+  font-size: 15px; font-weight: 700; font-family: 'Poppins', sans-serif;
+  border: 1.5px solid var(--border); background: var(--white);
+  cursor: pointer; width: 100%; transition: var(--transition); color: var(--text);
+}
+.btn-social:hover { background: var(--bg); border-color: var(--text-mid); }
+.btn-social i { font-size: 18px; }
+.btn-social .fa-google { color: #DB4437; }
+.btn-social .fa-facebook-f { color: #3b5998; }
+
+/* FORGOT PASSWORD LINK */
+.forgot-link {
+  display: block; text-align: right; font-size: 13px;
+  color: var(--green); margin-top: -12px; margin-bottom: 20px;
+  font-weight: 700;
+}
+.forgot-link:hover { text-decoration: underline; }
+
+/* FORM FOOTER NOTES */
+.form-note {
+  font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 16px;
+}
+.form-note a { color: var(--green); }
+.form-note a:hover { text-decoration: underline; }
+
+/* BENEFITS STRIP (inside register box) */
+.register-benefits {
+  background: var(--green-light);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+.register-benefit-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--text-mid);
+  padding: 5px 0;
+}
+.register-benefit-item [data-lucide] { width: 16px; height: 16px; color: var(--green); flex-shrink: 0; }
+
+/* FOOTER */
+.footer { background: #111C14; color: rgba(255,255,255,0.82); }
+.footer-top { padding: 60px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; }
+.footer-brand .logo-text strong { color: #9AC9A8; }
+.footer-brand .logo-text span   { color: rgba(255,255,255,0.35); }
+.footer-brand .logo-icon { background: rgba(255,255,255,0.08); }
+.footer-brand p {
+  font-size: 15px; color: rgba(255,255,255,0.65);
+  margin-top: 16px; line-height: 1.75; max-width: 240px;
+}
+.footer-social { display: flex; gap: 10px; margin-top: 20px; }
+.footer-social a {
+  width: 38px; height: 38px; background: rgba(255,255,255,0.08);
+  border-radius: var(--radius); display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.7); transition: var(--transition);
+}
+.footer-social a:hover { background: var(--green); color: var(--white); }
+.footer-col h5 {
+  font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 700;
+  color: rgba(255,255,255,0.38); margin-bottom: 16px; letter-spacing: 0.03em;
+}
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a { font-size: 15px; color: rgba(255,255,255,0.68); transition: var(--transition); }
+.footer-col ul li a:hover { color: var(--white); padding-left: 4px; }
+.footer-contact-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 12px; font-size: 15px; color: rgba(255,255,255,0.68);
+}
+.footer-contact-item [data-lucide] { color: var(--brown); }
+.footer-bottom {
+  padding: 20px 0; display: flex; justify-content: space-between; align-items: center;
+  font-size: 14px; color: rgba(255,255,255,0.38);
+}
+.footer-bottom a { color: rgba(255,255,255,0.45); transition: var(--transition); }
+.footer-bottom a:hover { color: var(--white); }
+.footer-bottom-links { display: flex; gap: 20px; }
+
+/* COOKIE BANNER */
+.cookie-banner {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #111C14; color: rgba(255,255,255,0.85); border-radius: 10px;
+  padding: 18px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  display: flex; align-items: center; gap: 20px;
+  max-width: 700px; width: calc(100% - 48px); z-index: 999;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.cookie-banner p { font-size: 15px; line-height: 1.55; flex: 1; }
+.cookie-banner p a { color: #9AC9A8; text-decoration: underline; }
+.cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.cookie-decline {
+  font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif;
+  color: rgba(255,255,255,0.6); padding: 9px 18px; border-radius: var(--radius);
+  border: 1.5px solid rgba(255,255,255,0.2); transition: var(--transition);
+  cursor: pointer; background: transparent;
+}
+.cookie-decline:hover { border-color: rgba(255,255,255,0.5); color: var(--white); }
+.cookie-banner.hidden { opacity: 0; transform: translateX(-50%) translateY(20px); pointer-events: none; }
+.btn-sm { font-size: 14px; padding: 9px 20px; width: auto; }
+
+/* BACK TO TOP */
+.back-top {
+  position: fixed; bottom: 32px; right: 32px;
+  width: 44px; height: 44px; background: var(--green); color: var(--white);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-lg); opacity: 0; transform: translateY(16px);
+  transition: opacity 0.3s, transform 0.3s; z-index: 90; cursor: pointer; border: none;
+}
+.back-top.visible { opacity: 1; transform: translateY(0); }
+.back-top:hover { background: var(--green-dark); }
+</style>
+</head>
+<body>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+  <p>Tento web používá cookies pro zajištění správné funkce a zlepšení Vašeho zážitku. <a href="#">Více informací</a></p>
+  <div class="cookie-actions">
+    <button class="cookie-decline" onclick="dismissCookie()">Odmítnout</button>
+    <button class="btn btn-primary btn-sm" onclick="dismissCookie()">Přijmout vše</button>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <span class="topbar-icon">
+        <i data-lucide="phone"></i>
+        <a href="tel:+420600123456">+420 600 123 456</a>
+      </span>
+      <span style="opacity:.35">|</span>
+      <span>Po až Pá, 9:00 do 17:00</span>
+    </div>
+    <div class="topbar-right">
+      <a href="cavallino-mio-about.html">O nás</a>
+      <a href="cavallino-mio-contact.html">Kontakty</a>
+      <a href="#">Doprava a platba</a>
+      <span style="opacity:.35">|</span>
+      <a href="cavallino-mio-login.html" style="font-weight:700">Přihlásit se</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+
+      <a href="cavallino-mio-homepage.html" class="logo">
+        <div class="logo-icon">
+          <i data-lucide="heart"></i>
+        </div>
+        <div class="logo-text">
+          <strong>Cavallino mio</strong>
+          <span>Jezdecké potřeby</span>
+        </div>
+      </a>
+
+      <nav class="nav-primary">
+        <ul>
+          <li>
+            <a href="cavallino-mio-category.html">Potřeby pro jezdce <i data-lucide="chevron-down"></i></a>
+            <ul class="nav-dropdown">
+              <li><a href="#">Přilby a helmy</a></li>
+              <li><a href="#">Jezdecké kalhoty</a></li>
+              <li><a href="#">Boty a čižmy</a></li>
+              <li><a href="#">Rukavice</a></li>
+              <li><a href="#">Bezpečnostní vesty</a></li>
+              <li><a href="#">Bundy a vesty</a></li>
+              <li><a href="#">Doplňky pro jezdce</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Potřeby pro koně <i data-lucide="chevron-down"></i></a>
+            <ul class="nav-dropdown">
+              <li><a href="#">Udidla a náhlavníky</a></li>
+              <li><a href="#">Sedla a podsedlové dečky</a></li>
+              <li><a href="#">Bandáže a chrániče</a></li>
+              <li><a href="#">Deky a čabraky</a></li>
+              <li><a href="#">Péče o srst</a></li>
+              <li><a href="#">Krmivo a doplňky</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Potřeby pro stáj <i data-lucide="chevron-down"></i></a>
+            <ul class="nav-dropdown">
+              <li><a href="#">Kbelíky a koryta</a></li>
+              <li><a href="#">Lonžovací pomůcky</a></li>
+              <li><a href="#">Vybavení stáje</a></li>
+              <li><a href="#">Hřebelcování</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="nav-vyprodej">Výprodej</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="search-bar">
+        <i data-lucide="search"></i>
+        <input type="text" placeholder="Hledat produkty…" aria-label="Hledat produkty">
+      </div>
+
+      <div class="header-actions">
+        <a href="cavallino-mio-login.html" class="header-action" title="Můj účet" style="background:var(--green-light);color:var(--green);">
+          <i data-lucide="user"></i>
+        </a>
+        <a href="cavallino-mio-cart.html" class="header-action" title="Košík" style="position:relative">
+          <i data-lucide="shopping-bag"></i>
+          <span class="cart-badge">0</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <p class="label">Váš účet</p>
+    <h1>Přihlásit se nebo se zaregistrovat</h1>
+    <p>Sledujte objednávky, spravujte oblíbené položky a nakupujte rychleji.</p>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="cavallino-mio-homepage.html">Domů</a>
+    <span>›</span>
+    <span>Přihlášení a registrace</span>
+  </nav>
+</div>
+
+<!-- MAIN CONTENT -->
+<section class="login-section">
+  <div class="container">
+    <div class="login-grid">
+
+      <!-- LEFT: LOGIN -->
+      <div class="form-box">
+        <div class="form-box-header">
+          <h2>Přihlásit se</h2>
+          <p>Zadejte své přihlašovací údaje a pokračujte do svého účtu.</p>
+        </div>
+
+        <div class="social-login">
+          <button class="btn-social" type="button">
+            <i class="fa-brands fa-google"></i>
+            Pokračovat přes Google
+          </button>
+          <button class="btn-social" type="button">
+            <i class="fa-brands fa-facebook-f"></i>
+            Pokračovat přes Facebook
+          </button>
+        </div>
+
+        <div class="form-divider">nebo e-mailem</div>
+
+        <form action="#" method="post" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="login-email">
+              E-mailová adresa <span class="req">*</span>
+            </label>
+            <input
+              class="form-input"
+              type="email"
+              id="login-email"
+              name="email"
+              placeholder="vas@email.cz"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-password">
+              Heslo <span class="req">*</span>
+            </label>
+            <div class="form-input-wrap">
+              <input
+                class="form-input"
+                type="password"
+                id="login-password"
+                name="password"
+                placeholder="Vaše heslo"
+                autocomplete="current-password"
+                required
+                style="padding-right:44px;"
+              >
+              <button type="button" class="toggle-pw" onclick="togglePw('login-password', this)" aria-label="Zobrazit heslo">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <a href="#" class="forgot-link">Zapomněli jste heslo?</a>
+
+          <div class="form-group">
+            <label class="form-check">
+              <input type="checkbox" name="remember">
+              <span class="form-check-label">Zapamatovat si mě na tomto zařízenÝ</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="log-in"></i>
+            Přihlásit se
+          </button>
+
+          <p class="form-note">
+            Přihlášením souhlasíte s <a href="#">podmínkami použití</a> a <a href="#">ochranou osobních údajů</a>.
+          </p>
+        </form>
+      </div>
+
+      <!-- RIGHT: REGISTRATION -->
+      <div class="form-box">
+        <div class="form-box-header">
+          <h2>Nová registrace</h2>
+          <p>Vytvořte si účet a získejte přístup k exkluzivním výhodám.</p>
+        </div>
+
+        <div class="register-benefits">
+          <div class="register-benefit-item">
+            <i data-lucide="package"></i>
+            Přehled všech objednávek na jednom místě
+          </div>
+          <div class="register-benefit-item">
+            <i data-lucide="heart"></i>
+            Ukládání oblíbených produktů
+          </div>
+          <div class="register-benefit-item">
+            <i data-lucide="zap"></i>
+            Rychlejší nákup díky uloženým adresám
+          </div>
+          <div class="register-benefit-item">
+            <i data-lucide="tag"></i>
+            Exkluzivní slevy pro registrované zákazníky
+          </div>
+        </div>
+
+        <form action="#" method="post" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="reg-name">
+              Jméno a příjmení <span class="req">*</span>
+            </label>
+            <input
+              class="form-input"
+              type="text"
+              id="reg-name"
+              name="name"
+              placeholder="Jana Nováková"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-email">
+              E-mailová adresa <span class="req">*</span>
+            </label>
+            <input
+              class="form-input"
+              type="email"
+              id="reg-email"
+              name="email"
+              placeholder="vas@email.cz"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-password">
+              Heslo <span class="req">*</span>
+            </label>
+            <div class="form-input-wrap">
+              <input
+                class="form-input"
+                type="password"
+                id="reg-password"
+                name="password"
+                placeholder="Alespoň 8 znaků"
+                autocomplete="new-password"
+                required
+                style="padding-right:44px;"
+                oninput="checkStrength(this)"
+              >
+              <button type="button" class="toggle-pw" onclick="togglePw('reg-password', this)" aria-label="Zobrazit heslo">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+            <div class="pw-strength" id="pwStrength" style="display:none;">
+              <div class="pw-strength-bars">
+                <div class="pw-bar" id="bar1"></div>
+                <div class="pw-bar" id="bar2"></div>
+                <div class="pw-bar" id="bar3"></div>
+              </div>
+              <span class="pw-strength-label" id="pwLabel"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-password2">
+              Zopakovat heslo <span class="req">*</span>
+            </label>
+            <div class="form-input-wrap">
+              <input
+                class="form-input"
+                type="password"
+                id="reg-password2"
+                name="password2"
+                placeholder="Zopakujte heslo"
+                autocomplete="new-password"
+                required
+                style="padding-right:44px;"
+              >
+              <button type="button" class="toggle-pw" onclick="togglePw('reg-password2', this)" aria-label="Zobrazit heslo">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-check">
+              <input type="checkbox" name="gdpr" required>
+              <span class="form-check-label">
+                Souhlasím se <a href="#">zpracováním osobních údajů</a> a s <a href="#">obchodními podmínkami</a>. <span class="req">*</span>
+              </span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="form-check">
+              <input type="checkbox" name="newsletter">
+              <span class="form-check-label">
+                Chci dostávat novinky a exkluzivní nabídky e-mailem (nepovinné).
+              </span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-outline" style="border-width:2px;">
+            <i data-lucide="user-plus"></i>
+            Vytvořit účet zdarma
+          </button>
+
+          <p class="form-note">
+            Registrace je zdarma a bez závazků. Svůj účet můžete kdykoli zrušit.
+          </p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <a href="cavallino-mio-homepage.html" class="logo">
+            <div class="logo-icon"><i data-lucide="heart"></i></div>
+            <div class="logo-text">
+              <strong>Cavallino mio</strong>
+              <span>Jezdecké potřeby</span>
+            </div>
+          </a>
+          <p>Váš partner pro jezdecký svět. Vybavení pro jezdce i koně s poradenstvím a doručením po celé ČR.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>KATEGORIE</h5>
+          <ul>
+            <li><a href="#">Potřeby pro jezdce</a></li>
+            <li><a href="#">Potřeby pro koně</a></li>
+            <li><a href="#">Potřeby pro stáj</a></li>
+            <li><a href="#">Novinky</a></li>
+            <li><a href="#" style="color:#E88;">Výprodej</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>ZÁKAZNICKÝ SERVIS</h5>
+          <ul>
+            <li><a href="#">Doprava a platba</a></li>
+            <li><a href="#">Vrácení zboží</a></li>
+            <li><a href="#">Reklamace</a></li>
+            <li><a href="#">Průvodce velikostmi</a></li>
+            <li><a href="cavallino-mio-contact.html">Kontakt</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>KONTAKT</h5>
+          <div class="footer-contact-item">
+            <i data-lucide="phone"></i>
+            <span>+420 600 123 456</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="mail"></i>
+            <span>info@cavallinomio.cz</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="map-pin"></i>
+            <span>Ukázková ulice 12<br>110 00 Praha 1</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="clock"></i>
+            <span>Po až Pá, 9:00 do 17:00</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>&copy; 2025 Cavallino mio s.r.o. Všechna práva vyhrazena.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Obchodní podmínky</a>
+        <a href="#">Ochrana osobních údajů</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Nahoru">
+  <i data-lucide="arrow-up"></i>
+</button>
+
+<script>
+lucide.createIcons();
+
+// Cookie banner
+function dismissCookie() {
+  document.getElementById('cookieBanner').classList.add('hidden');
+}
+setTimeout(() => {
+  const b = document.getElementById('cookieBanner');
+  if (b) b.style.display = 'flex';
+}, 800);
+
+// Back to top
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+});
+
+// Toggle password visibility
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  const isText = inp.type === 'text';
+  inp.type = isText ? 'password' : 'text';
+  btn.innerHTML = isText
+    ? '<i data-lucide="eye"></i>'
+    : '<i data-lucide="eye-off"></i>';
+  lucide.createIcons();
+}
+
+// Password strength
+function checkStrength(inp) {
+  const val = inp.value;
+  const wrap = document.getElementById('pwStrength');
+  const label = document.getElementById('pwLabel');
+  const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+
+  if (!val) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'flex';
+
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+
+  bars.forEach((b, i) => {
+    b.className = 'pw-bar';
+    if (i < score) {
+      b.classList.add(score === 1 ? 'active-weak' : score === 2 ? 'active-medium' : 'active-strong');
+    }
+  });
+  label.textContent = score === 1 ? 'Slabé' : score === 2 ? 'Střední' : 'Silné';
+  label.style.color = score === 1 ? '#C0392B' : score === 2 ? '#E8A020' : 'var(--green)';
+}
+</script>
+</body>
+</html>
